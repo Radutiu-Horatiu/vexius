@@ -23,12 +23,12 @@ app.use(xss());
 app.use(helmet());
 
 /* Get user by id */
-app.post('/getUser', async (req, res) => {
+app.get('/getUser', async (req, res) => {
   const { id } = req.body;
 
   try {
     const response = await smartContract.methods.getUser(id).call();
-    return res.status(200).send(response);
+    return res.status(200).send({ id: response[0], balance: response[1] });
   } catch (e) {
     return res.status(500).send(e.message);
   }
@@ -40,6 +40,102 @@ app.post('/addNewUser', async (req, res) => {
 
   try {
     const tx = smartContract.methods.addNewUser(id);
+
+    const receipt = await tx.send({
+      from: signer.address,
+      gas: await tx.estimateGas(),
+    });
+
+    return res.status(200).send(receipt);
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
+/* Get Vexcoin data */
+app.get('/getVexcoinData', async (req, res) => {
+  try {
+    const response = await smartContract.methods.getVexcoinData().call();
+    return res
+      .status(200)
+      .send({ vexcoin_amount: response[0], total_users: response[1] });
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
+/* Transfer coins to user balance */
+app.post('/buyVexcoins', async (req, res) => {
+  const { id, amount } = req.body;
+
+  try {
+    const tx = smartContract.methods.buyVexcoins(id, amount);
+
+    const receipt = await tx.send({
+      from: signer.address,
+      gas: await tx.estimateGas(),
+    });
+
+    return res.status(200).send(receipt);
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
+/* Transfer coins to user balance */
+app.post('/transferCoins', async (req, res) => {
+  const { from, to, amount } = req.body;
+
+  try {
+    const tx = smartContract.methods.transferCoins(from, to, amount);
+
+    const receipt = await tx.send({
+      from: signer.address,
+      gas: await tx.estimateGas(),
+    });
+
+    return res.status(200).send(receipt);
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
+/* Get item by id */
+app.get('/getItem', async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const response = await smartContract.methods.getItem(id).call();
+    return res.status(200).send({ itemId: response[0], ownerId: response[1] });
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
+/* Adds and creates a new item */
+app.post('/addNewItem', async (req, res) => {
+  const { itemId, ownerId } = req.body;
+
+  try {
+    const tx = smartContract.methods.addNewItem(itemId, ownerId);
+
+    const receipt = await tx.send({
+      from: signer.address,
+      gas: await tx.estimateGas(),
+    });
+
+    return res.status(200).send(receipt);
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
+/* Transfer items between users */
+app.post('/transferItem', async (req, res) => {
+  const { itemId, from, to, cost } = req.body;
+
+  try {
+    const tx = smartContract.methods.transferItem(itemId, from, to, cost);
 
     const receipt = await tx.send({
       from: signer.address,
