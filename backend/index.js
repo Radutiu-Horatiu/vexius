@@ -24,11 +24,15 @@ app.use(helmet());
 
 /* Get user by id */
 app.get('/getUser', async (req, res) => {
-  const { id } = req.body;
+  const { privateKey } = req.body;
 
   try {
-    const response = await smartContract.methods.getUser(id).call();
-    return res.status(200).send({ id: response[0], balance: response[1] });
+    const response = await smartContract.methods.getUser(privateKey).call();
+    return res.status(200).send({
+      privateKey: response[0],
+      publicKey: response[1],
+      balance: response[2],
+    });
   } catch (e) {
     return res.status(500).send(e.message);
   }
@@ -36,10 +40,10 @@ app.get('/getUser', async (req, res) => {
 
 /* Adds a new user */
 app.post('/addNewUser', async (req, res) => {
-  const { id } = req.body;
+  const { privateKey, publicKey } = req.body;
 
   try {
-    const tx = smartContract.methods.addNewUser(id);
+    const tx = smartContract.methods.addNewUser(privateKey, publicKey);
 
     const receipt = await tx.send({
       from: signer.address,
@@ -65,11 +69,11 @@ app.get('/getVexcoinData', async (req, res) => {
 });
 
 /* Transfer coins to user balance */
-app.post('/buyVexcoins', async (req, res) => {
-  const { id, amount } = req.body;
+app.post('/sendVexcoins', async (req, res) => {
+  const { publicKey, amount } = req.body;
 
   try {
-    const tx = smartContract.methods.buyVexcoins(id, amount);
+    const tx = smartContract.methods.sendVexcoins(publicKey, amount);
 
     const receipt = await tx.send({
       from: signer.address,
@@ -84,10 +88,14 @@ app.post('/buyVexcoins', async (req, res) => {
 
 /* Transfer coins to user balance */
 app.post('/transferCoins', async (req, res) => {
-  const { from, to, amount } = req.body;
+  const { fromPrivateKey, toPublicKey, amount } = req.body;
 
   try {
-    const tx = smartContract.methods.transferCoins(from, to, amount);
+    const tx = smartContract.methods.transferCoins(
+      fromPrivateKey,
+      toPublicKey,
+      amount
+    );
 
     const receipt = await tx.send({
       from: signer.address,
@@ -132,10 +140,15 @@ app.post('/addNewItem', async (req, res) => {
 
 /* Transfer items between users */
 app.post('/transferItem', async (req, res) => {
-  const { itemId, from, to, cost } = req.body;
+  const { itemId, fromPrivateKey, toPublicKey, cost } = req.body;
 
   try {
-    const tx = smartContract.methods.transferItem(itemId, from, to, cost);
+    const tx = smartContract.methods.transferItem(
+      itemId,
+      fromPrivateKey,
+      toPublicKey,
+      cost
+    );
 
     const receipt = await tx.send({
       from: signer.address,
