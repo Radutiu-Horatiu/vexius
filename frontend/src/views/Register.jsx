@@ -135,13 +135,13 @@ const Register = ({ registerWithEmailAndPassword, rematchLoading }) => {
               <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
             </FormControl>
             <FormControl id="name" isRequired isInvalid={errors?.name}>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Username</FormLabel>
               <Input
                 type="text"
                 onChange={fieldName.onChange}
                 value={fieldName.value}
                 name={fieldName.name}
-                placeholder="John Doe"
+                placeholder="vexmeister"
               />
               <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
             </FormControl>

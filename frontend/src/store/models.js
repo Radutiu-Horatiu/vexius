@@ -2,10 +2,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-} from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+} from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
-import { auth, db } from '../firebase';
+import { auth, db } from "../firebase";
 
 export const user = {
   state: {
@@ -42,13 +42,12 @@ export const user = {
       );
 
       const newUserData = {
-        ...response.user.providerData[0],
-        uid: response.user.uid,
+        email: response.user.providerData[0].email,
+        username: name,
         createdAt: new Date(),
-        displayName: name,
       };
 
-      await setDoc(doc(db, 'users', response.user.uid), newUserData);
+      await setDoc(doc(db, "users", response.user.uid), newUserData);
     },
 
     async loginWithEmailAndPassword({ email, password }) {

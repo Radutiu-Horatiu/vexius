@@ -1,14 +1,14 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyA0K2f14SRll-QvKnevIvgUbvY06IBDy4I',
-  authDomain: 'react-boilerplate-f39c8.firebaseapp.com',
-  projectId: 'react-boilerplate-f39c8',
-  storageBucket: 'react-boilerplate-f39c8.appspot.com',
-  messagingSenderId: '276083503906',
-  appId: '1:276083503906:web:6d0220a50939a08f292b7b',
+  apiKey: "AIzaSyDwOtb7SFh2XHDg0s8hYCUQp1qNHENcsGg",
+  authDomain: "vexius-56e53.firebaseapp.com",
+  projectId: "vexius-56e53",
+  storageBucket: "vexius-56e53.appspot.com",
+  messagingSenderId: "221517160649",
+  appId: "1:221517160649:web:b2d46cc50d3d9cb5f46d18",
 };
 
 const app = initializeApp(firebaseConfig);
