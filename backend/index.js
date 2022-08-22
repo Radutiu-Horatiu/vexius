@@ -4,7 +4,7 @@ const cors = require('cors');
 const xss = require('xss-clean');
 const helmet = require('helmet');
 
-const { smartContract, signer } = require('./contract/smartContract');
+const { smartContract } = require('./contract/smartContract');
 
 const app = express();
 
@@ -22,8 +22,13 @@ app.use(express.json({ limit: '10kb' }));
 app.use(xss());
 app.use(helmet());
 
+/* Hello */
+app.get('/', async (req, res) => {
+  return res.status(200).send('Hello, Vexius!');
+});
+
 /* Get user by id */
-app.get('/getUser', async (req, res) => {
+app.post('/getUser', async (req, res) => {
   const { privateKey } = req.body;
 
   try {
@@ -46,7 +51,6 @@ app.post('/addNewUser', async (req, res) => {
     const tx = smartContract.methods.addNewUser(privateKey, publicKey);
 
     const receipt = await tx.send({
-      from: signer.address,
       gas: await tx.estimateGas(),
     });
 
@@ -57,7 +61,7 @@ app.post('/addNewUser', async (req, res) => {
 });
 
 /* Get Vexcoin data */
-app.get('/getVexcoinData', async (req, res) => {
+app.post('/getVexcoinData', async (req, res) => {
   try {
     const response = await smartContract.methods.getVexcoinData().call();
     return res
@@ -76,7 +80,6 @@ app.post('/sendVexcoins', async (req, res) => {
     const tx = smartContract.methods.sendVexcoins(publicKey, amount);
 
     const receipt = await tx.send({
-      from: signer.address,
       gas: await tx.estimateGas(),
     });
 
@@ -98,7 +101,6 @@ app.post('/transferCoins', async (req, res) => {
     );
 
     const receipt = await tx.send({
-      from: signer.address,
       gas: await tx.estimateGas(),
     });
 
@@ -109,7 +111,7 @@ app.post('/transferCoins', async (req, res) => {
 });
 
 /* Get item by id */
-app.get('/getItem', async (req, res) => {
+app.post('/getItem', async (req, res) => {
   const { id } = req.body;
 
   try {
@@ -128,7 +130,6 @@ app.post('/addNewItem', async (req, res) => {
     const tx = smartContract.methods.addNewItem(itemId, ownerId);
 
     const receipt = await tx.send({
-      from: signer.address,
       gas: await tx.estimateGas(),
     });
 
@@ -151,7 +152,6 @@ app.post('/transferItem', async (req, res) => {
     );
 
     const receipt = await tx.send({
-      from: signer.address,
       gas: await tx.estimateGas(),
     });
 
@@ -164,5 +164,5 @@ app.post('/transferItem', async (req, res) => {
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`);
+  console.log(`App is running on http://localhost:${process.env.PORT}`);
 });
