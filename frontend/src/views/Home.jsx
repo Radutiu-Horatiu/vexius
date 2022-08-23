@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Box, Button, Grid, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as ReactRouterLink } from "react-router-dom";
@@ -19,17 +19,12 @@ const Home = () => {
           <Heading>Vexius</Heading>
 
           {!isAuthenticated ? (
-            <HStack>
-              <Button as={ReactRouterLink} to="/login">
-                Login
-              </Button>
-              <Button as={ReactRouterLink} to="/register">
-                Register
-              </Button>
-            </HStack>
+            <Button as={ReactRouterLink} to="/login">
+              Login
+            </Button>
           ) : (
             <>
-              <Heading>Hello, {user.username}!</Heading>
+              <Heading>Hello, {user.fullName}!</Heading>
               <Button onClick={() => dispatch.user.logout()}>Logout</Button>
             </>
           )}
