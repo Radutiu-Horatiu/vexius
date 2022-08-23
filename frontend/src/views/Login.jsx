@@ -18,26 +18,19 @@ const Login = () => {
     <Flex h="100vh" w="100vw" justify="center" align="center">
       <Stack spacing={8} mx="auto" w="xl" py={12} px={6}>
         <Stack align="center">
-          <Heading fontSize="4xl">Sign in to your account</Heading>
+          <Heading fontSize="4xl">Sign In To Vexius</Heading>
         </Stack>
-        <Box
-          bg={useColorModeValue("gray.50", "gray.700")}
-          boxShadow="lg"
-          rounded="lg"
-          p={5}
-        >
-          <VStack>
-            <GoogleSignIn />
-            <Button
-              as={ReactRouterLink}
-              to="/"
-              w={"100%"}
-              leftIcon={<FaArrowLeft />}
-            >
-              Go Back
-            </Button>
-          </VStack>
-        </Box>
+        <VStack>
+          <GoogleSignIn />
+          <Button
+            as={ReactRouterLink}
+            to="/"
+            w={"100%"}
+            leftIcon={<FaArrowLeft />}
+          >
+            Go Back
+          </Button>
+        </VStack>
       </Stack>
     </Flex>
   );

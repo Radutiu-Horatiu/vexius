@@ -14,4 +14,17 @@ export const theme = extendTheme({
     useSystemColorMode: false,
     cssVarPrefix: "vexius",
   },
+  components: {
+    Button: {
+      variants: {
+        solid: props => ({
+          bg: props.colorMode === "dark" ? "whiteAlpha.200" : "blackAlpha.200",
+          _hover: {
+            bg:
+              props.colorMode === "dark" ? "whiteAlpha.300" : "blackAlpha.300",
+          },
+        }),
+      },
+    },
+  },
 });

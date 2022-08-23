@@ -9,21 +9,20 @@ const GoogleSignIn = ({ signInWithProvider }) => {
 
   const auth = getAuth();
 
-  const googleSignIn = () => {
-    signInWithPopup(auth, provider)
-      .then(result => {
-        const user = result.user;
+  const googleSignIn = async () => {
+    try {
+      const responseFromAuth = await signInWithPopup(auth, provider);
+      const isNewUser = responseFromAuth._tokenResponse?.isNewUser;
+      const user = responseFromAuth.user;
 
-        const userData = {
-          email: user.email,
-          fullName: user.displayName,
-          createdAt: new Date(),
-        };
-        signInWithProvider({ userData, uid: user.uid });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      const userData = {
+        email: user.email,
+        fullName: user.displayName,
+      };
+      signInWithProvider({ userData, uid: user.uid, isNewUser });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

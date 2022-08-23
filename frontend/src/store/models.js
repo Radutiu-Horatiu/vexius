@@ -24,8 +24,8 @@ export const user = {
       await signOut(auth).finally(() => this.setUser(null));
     },
 
-    async signInWithProvider({ userData, uid }) {
-      await setDoc(doc(db, "users", uid), userData);
+    async signInWithProvider({ userData, uid, isNewUser }) {
+      isNewUser && (await setDoc(doc(db, "users", uid), userData));
     },
   }),
 };
