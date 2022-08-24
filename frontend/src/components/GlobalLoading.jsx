@@ -1,22 +1,22 @@
-import React from 'react';
-import { Center } from '@chakra-ui/layout';
-import { Lottie } from '@crello/react-lottie';
+import React from "react";
+import { Center, VStack, Heading } from "@chakra-ui/layout";
+import { Spinner, useColorModeValue } from "@chakra-ui/react";
 
-import animationData from '../assets/lotties/react.json';
-
-const defaultLottieOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
-
-const GlobalLoading = () => {
+const GlobalLoading = ({ text }) => {
   return (
-    <Center h="100vh" w="100vw">
-      <Lottie config={defaultLottieOptions} height={400} width={400} />
+    <Center
+      h="100vh"
+      w="100vw"
+      pos={"fixed"}
+      top="0"
+      left="0"
+      bg={useColorModeValue("whiteAlpha.900", "blackAlpha.900")}
+      zIndex={1}
+    >
+      <VStack spacing={5}>
+        {text && <Heading textTransform={"capitalize"}>{text}</Heading>}
+        <Spinner size={"lg"} thickness={3} />
+      </VStack>
     </Center>
   );
 };

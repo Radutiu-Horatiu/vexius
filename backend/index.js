@@ -3,8 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const xss = require('xss-clean');
 const helmet = require('helmet');
+const Web3EthAccounts = require('web3-eth-accounts');
 
 const { smartContract } = require('./contract/smartContract');
+const { auth } = require('./firebase');
 
 const app = express();
 
@@ -45,16 +47,26 @@ app.post('/getUser', async (req, res) => {
 
 /* Adds a new user */
 app.post('/addNewUser', async (req, res) => {
-  const { privateKey, publicKey } = req.body;
-
   try {
-    const tx = smartContract.methods.addNewUser(privateKey, publicKey);
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    auth.verifyIdToken(bearerToken);
 
-    const receipt = await tx.send({
+    // generate account private key and public key
+    const web3Account = new Web3EthAccounts();
+    let data = web3Account.create();
+
+    // register on blockchain
+    const tx = smartContract.methods.addNewUser(data.privateKey, data.address);
+
+    await tx.send({
       gas: await tx.estimateGas(),
     });
 
-    return res.status(200).send(receipt);
+    // return public key only
+    return res
+      .status(200)
+      .send({ privateKey: data.privateKey, publicKey: data.address });
   } catch (e) {
     return res.status(500).send(e.message);
   }

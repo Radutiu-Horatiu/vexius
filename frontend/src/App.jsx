@@ -8,6 +8,7 @@ import RequireNotAuth from "./components/routeMiddlewares/RequireNotAuth";
 const Home = React.lazy(() => import("./views/Home"));
 const Protected = React.lazy(() => import("./views/Protected"));
 const Login = React.lazy(() => import("./views/Login"));
+const Success = React.lazy(() => import("./views/Success"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
 const App = () => {
@@ -39,6 +40,17 @@ const App = () => {
           <RequireNotAuth>
             <React.Suspense fallback={<GlobalLoading />}>
               <Login />
+            </React.Suspense>
+          </RequireNotAuth>
+        }
+      />
+
+      <Route
+        path="/success"
+        element={
+          <RequireNotAuth>
+            <React.Suspense fallback={<GlobalLoading />}>
+              <Success />
             </React.Suspense>
           </RequireNotAuth>
         }

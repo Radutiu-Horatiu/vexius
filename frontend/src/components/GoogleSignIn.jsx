@@ -1,39 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Button } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
+import axios from "axios";
+import { doc, getDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-const GoogleSignIn = ({ signInWithProvider }) => {
+import { db } from "../firebase";
+import GlobalLoading from "./GlobalLoading";
+
+const GoogleSignIn = () => {
+  const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState(null);
   const provider = new GoogleAuthProvider();
-
+  const dispatch = useDispatch();
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const googleSignIn = async () => {
     try {
+      setLoading(true);
       const responseFromAuth = await signInWithPopup(auth, provider);
       const isNewUser = responseFromAuth._tokenResponse?.isNewUser;
       const user = responseFromAuth.user;
 
-      const userData = {
-        email: user.email,
-        fullName: user.displayName,
-      };
-      signInWithProvider({ userData, uid: user.uid, isNewUser });
+      if (isNewUser) {
+        setLoadingText("Saving on blockchain");
+
+        // make call to register user on blockchain
+        const bearerToken = await auth.currentUser.getIdToken(true);
+
+        const response = await axios.request({
+          method: "POST",
+          url: `${process.env.REACT_APP_BACKEND_URL}addNewUser`,
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+          },
+        });
+
+        // go to success page to copy private key and create account
+        navigate("/success", {
+          state: {
+            email: user.email,
+            fullName: user.displayName,
+            uid: user.uid,
+            publicKey: response.data.publicKey,
+            privateKey: response.data.privateKey,
+          },
+        });
+      } else {
+        // get userData from firestore
+        const userData = await getDoc(doc(db, "users", user.uid));
+        dispatch.user.setUser(userData.data());
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+      setLoadingText(null);
     }
   };
 
   return (
-    <Button onClick={googleSignIn} w={"100%"} leftIcon={<FaGoogle />}>
-      Sign In With Google
-    </Button>
+    <>
+      {loading && <GlobalLoading text={loadingText} />}
+      <Button onClick={googleSignIn} w={"100%"} leftIcon={<FaGoogle />}>
+        Sign In With Google
+      </Button>
+    </>
   );
 };
 
-const mapDispatch = dispatch => ({
-  signInWithProvider: dispatch.user.signInWithProvider,
-});
-
-export default connect(null, mapDispatch)(GoogleSignIn);
+export default GoogleSignIn;

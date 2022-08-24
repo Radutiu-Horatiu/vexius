@@ -1,7 +1,5 @@
 import { signOut } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 
 export const user = {
   state: {
@@ -22,10 +20,6 @@ export const user = {
   effects: dispatch => ({
     async logout() {
       await signOut(auth).finally(() => this.setUser(null));
-    },
-
-    async signInWithProvider({ userData, uid, isNewUser }) {
-      isNewUser && (await setDoc(doc(db, "users", uid), userData));
     },
   }),
 };
