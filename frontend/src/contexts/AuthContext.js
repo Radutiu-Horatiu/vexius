@@ -1,11 +1,11 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { onAuthStateChanged } from '@firebase/auth';
-import { doc, onSnapshot } from '@firebase/firestore';
+import React from "react";
+import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { onAuthStateChanged } from "@firebase/auth";
+import { doc, onSnapshot } from "@firebase/firestore";
 
-import { db, auth } from '../firebase';
-import { emptyFn } from '../utils/helpers';
+import { db, auth } from "../firebase";
+import { emptyFn } from "../utils/helpers";
 
 const AuthContext = React.createContext();
 
@@ -24,14 +24,9 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       if (user) {
         unsubscribeUsersCollection = onSnapshot(
-          doc(db, 'users', user.uid),
+          doc(db, "users", user.uid),
           doc => {
-            if (!doc.exists()) {
-              dispatch.user.logout();
-            }
-
             let data = doc.data();
-
             dispatch.user.setUser(data);
           }
         );
@@ -50,16 +45,14 @@ const AuthProvider = ({ children }) => {
   React.useEffect(() => {
     if (location?.state?.from?.pathname) {
       localStorage.setItem(
-        'redirectWhereCameFrom',
+        "redirectWhereCameFrom",
         location?.state?.from?.pathname
       );
     }
 
     return () => {
-      if (
-        !['/login', '/register', '/reset-password'].includes(location.pathname)
-      ) {
-        localStorage.removeItem('redirectWhereCameFrom');
+      if (!["/login"].includes(location.pathname)) {
+        localStorage.removeItem("redirectWhereCameFrom");
       }
     };
   }, [location]);

@@ -11,32 +11,22 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FaArrowRight, FaCopy } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
-import { doc, setDoc } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { db } from "../firebase";
 const PageNotFound = React.lazy(() => import("./PageNotFound"));
 
 const Success = () => {
+  const user = useSelector(state => state.user.value);
   const { state } = useLocation();
   const toast = useToast();
-  const dispatch = useDispatch();
   const [hasCopied, setHasCopied] = useState(false);
   const { onCopy } = useClipboard(state?.privateKey);
+  const navigate = useNavigate();
 
   const confirm = async () => {
-    let userData = {
-      email: state.email,
-      fullName: state.fullName,
-      publicKey: state.publicKey,
-    };
-
-    // save user to firestore
-    await setDoc(doc(db, "users", state.uid), userData);
-
-    // send user to home
-    dispatch.user.setUser(userData);
+    // go home
+    navigate("/");
   };
 
   const copyPrivateKey = () => {
@@ -58,7 +48,7 @@ const Success = () => {
     <Flex h="100vh" w="100vw" justify="center" align="center">
       <Stack spacing={8} mx="auto" w="xl">
         <Heading textAlign={"center"} fontSize="4xl">
-          Hi There, {state.fullName}!
+          Hi There, {user.fullName}!
         </Heading>
         <VStack>
           <Box pb={8}>

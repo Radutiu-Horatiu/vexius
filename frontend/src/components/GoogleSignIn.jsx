@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Button } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
 import axios from "axios";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 import { db } from "../firebase";
@@ -39,20 +39,30 @@ const GoogleSignIn = () => {
           },
         });
 
+        let userData = {
+          email: user.email,
+          fullName: user.displayName,
+          publicKey: response.data.publicKey,
+        };
+
+        // save user to firestore
+        setDoc(doc(db, "users", user.uid), userData);
+
         // go to success page to copy private key and create account
         navigate("/success", {
           state: {
-            email: user.email,
-            fullName: user.displayName,
-            uid: user.uid,
-            publicKey: response.data.publicKey,
             privateKey: response.data.privateKey,
           },
         });
       } else {
         // get userData from firestore
         const userData = await getDoc(doc(db, "users", user.uid));
+
+        // set user
         dispatch.user.setUser(userData.data());
+
+        // go home
+        navigate("/");
       }
     } catch (error) {
       console.log(error);

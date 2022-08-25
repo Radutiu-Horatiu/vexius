@@ -4,8 +4,14 @@ import { Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
 
 import GoogleSignIn from "../components/GoogleSignIn";
+import { useAuth } from "../contexts/AuthContext";
+import GlobalLoading from "../components/GlobalLoading";
 
 const Login = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) return <GlobalLoading />;
+
   return (
     <Flex h="100vh" w="100vw" justify="center" align="center">
       <Stack spacing={8} mx="auto" w="xl">
