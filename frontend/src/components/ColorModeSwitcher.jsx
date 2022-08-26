@@ -8,7 +8,7 @@ const ColorModeSwitcher = props => {
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
 
   return (
-    <Button onClick={toggleColorMode} leftIcon={<SwitchIcon />}>
+    <Button onClick={toggleColorMode} leftIcon={<SwitchIcon />} {...props}>
       {text}
     </Button>
   );

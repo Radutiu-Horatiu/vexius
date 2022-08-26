@@ -3,9 +3,10 @@ import { Route, Routes } from "react-router-dom";
 
 import GlobalLoading from "./components/GlobalLoading";
 import RequireAuth from "./components/routeMiddlewares/RequireAuth";
-import RequireNotAuth from "./components/routeMiddlewares/RequireNotAuth";
+import Screen from "./components/Screen";
 
 const Home = React.lazy(() => import("./views/Home"));
+const CreateItem = React.lazy(() => import("./views/CreateItem"));
 const Login = React.lazy(() => import("./views/Login"));
 const Success = React.lazy(() => import("./views/Success"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
@@ -17,8 +18,23 @@ const App = () => {
         path="/"
         element={
           <React.Suspense fallback={<GlobalLoading />}>
-            <Home />
+            <Screen>
+              <Home />
+            </Screen>
           </React.Suspense>
+        }
+      />
+
+      <Route
+        path="/create"
+        element={
+          <RequireAuth>
+            <React.Suspense fallback={<GlobalLoading />}>
+              <Screen>
+                <CreateItem />
+              </Screen>
+            </React.Suspense>
+          </RequireAuth>
         }
       />
 
@@ -26,7 +42,9 @@ const App = () => {
         path="/login"
         element={
           <React.Suspense fallback={<GlobalLoading />}>
-            <Login />
+            <Screen>
+              <Login />
+            </Screen>
           </React.Suspense>
         }
       />
@@ -35,7 +53,9 @@ const App = () => {
         path="/success"
         element={
           <React.Suspense fallback={<GlobalLoading />}>
-            <Success />
+            <Screen>
+              <Success />
+            </Screen>
           </React.Suspense>
         }
       />
@@ -44,7 +64,9 @@ const App = () => {
         path="*"
         element={
           <React.Suspense fallback={<GlobalLoading />}>
-            <PageNotFound />
+            <Screen>
+              <PageNotFound />
+            </Screen>
           </React.Suspense>
         }
       />

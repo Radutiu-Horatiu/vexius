@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
-  Flex,
   Heading,
   Stack,
   Text,
@@ -24,8 +23,7 @@ const Success = () => {
   const { onCopy } = useClipboard(state?.privateKey);
   const navigate = useNavigate();
 
-  const confirm = async () => {
-    // go home
+  const goHome = () => {
     navigate("/");
   };
 
@@ -45,7 +43,7 @@ const Success = () => {
   if (!state?.privateKey) return <PageNotFound />;
 
   return (
-    <Flex h="100vh" w="100vw" justify="center" align="center">
+    <Box>
       <Stack spacing={8} mx="auto" w="xl">
         <Heading textAlign={"center"} fontSize="4xl">
           Hi There, {user.fullName}!
@@ -66,16 +64,16 @@ const Success = () => {
           </Box>
           {!hasCopied ? (
             <Button w={"100%"} leftIcon={<FaCopy />} onClick={copyPrivateKey}>
-              Copy Private Key
+              Copy Private Key To Continue
             </Button>
           ) : (
-            <Button w={"100%"} leftIcon={<FaArrowRight />} onClick={confirm}>
+            <Button w={"100%"} leftIcon={<FaArrowRight />} onClick={goHome}>
               Continue
             </Button>
           )}
         </VStack>
       </Stack>
-    </Flex>
+    </Box>
   );
 };
 

@@ -43,6 +43,7 @@ const GoogleSignIn = () => {
           email: user.email,
           fullName: user.displayName,
           publicKey: response.data.publicKey,
+          uid: user.uid,
         };
 
         // save user to firestore
