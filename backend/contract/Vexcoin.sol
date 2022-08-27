@@ -100,6 +100,16 @@ contract Vexcoin {
         } else revert ("User does not exist or no more coins available.");
     }
 
+    // Get balance of user by public key, owner only
+    function getBalance(int public_key) onlyOwner public view returns (int) {
+        User memory user = userByPublicKey(public_key);
+
+        // user must exist
+        if (checkUserExists(user.private_key))
+            return user.balance;
+        else revert ("User does not exist.");
+    }
+
     // Transfer coins between users
     function transferCoins(string memory from_private_key, int to_public_key, int amount) public {
         User memory user_from = userByPrivateKey(from_private_key);

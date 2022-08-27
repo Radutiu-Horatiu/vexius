@@ -45,6 +45,18 @@ app.post('/getUser', async (req, res) => {
   }
 });
 
+/* Get user by id */
+app.post('/getBalance', async (req, res) => {
+  const { publicKey } = req.body;
+
+  try {
+    const response = await smartContract.methods.getBalance(publicKey).call();
+    return res.status(200).send(response);
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
 /* Adds a new user */
 app.post('/addNewUser', async (req, res) => {
   try {
@@ -54,7 +66,7 @@ app.post('/addNewUser', async (req, res) => {
 
     // generate account private key and public key
     const web3Account = new Web3EthAccounts();
-    let data = web3Account.create();
+    const data = web3Account.create();
 
     // register on blockchain
     const tx = smartContract.methods.addNewUser(data.privateKey, data.address);
@@ -86,10 +98,10 @@ app.post('/getVexcoinData', async (req, res) => {
 
 /* Transfer coins to user balance */
 app.post('/sendVexcoins', async (req, res) => {
-  const { publicKey, amount } = req.body;
+  const { privateKey, amount } = req.body;
 
   try {
-    const tx = smartContract.methods.sendVexcoins(publicKey, amount);
+    const tx = smartContract.methods.sendVexcoins(privateKey, amount);
 
     const receipt = await tx.send({
       gas: await tx.estimateGas(),
