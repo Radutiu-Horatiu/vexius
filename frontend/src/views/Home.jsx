@@ -1,16 +1,20 @@
-import { Box, Button, Heading, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 
 import ColorModeSwitcher from "../components/ColorModeSwitcher";
 import { useAuth } from "../contexts/AuthContext";
+import useGetUserBalance from "../hooks/useGetUserBalance";
+import useGetVexcoinData from "../hooks/useGetVexcoinData";
 
 const Home = () => {
   const user = useSelector(state => state.user.value);
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const balance = useGetUserBalance();
+  const vexcoinData = useGetVexcoinData();
 
   return (
     <Box>
@@ -24,6 +28,9 @@ const Home = () => {
         ) : (
           <>
             <Heading>Hello, {user.fullName}!</Heading>
+            <Text>Balance: {balance} VX</Text>
+            <Text>Vexcoins: {vexcoinData.vexcoin_amount}</Text>
+            <Text>Users: {vexcoinData.total_users}</Text>
             <Button onClick={() => dispatch.user.logout()} w={"100%"}>
               Log Out
             </Button>
