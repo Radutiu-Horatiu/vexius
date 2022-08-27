@@ -28,8 +28,6 @@ const useGetUserBalance = () => {
     })();
   }, [user]);
 
-  if (!userBalance) return "Loading..";
-
   return userBalance;
 };
 

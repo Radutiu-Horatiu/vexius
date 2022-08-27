@@ -29,13 +29,16 @@ const Home = () => {
           <>
             <Heading>Hello, {user.fullName}!</Heading>
             <Text>Balance: {balance} VX</Text>
-            <Text>Vexcoins: {vexcoinData.vexcoin_amount}</Text>
-            <Text>Users: {vexcoinData.total_users}</Text>
+            <Text>Vexcoins: {vexcoinData.vexcoin_amount || 0} VX</Text>
+            <Text>Users: {vexcoinData.total_users || 0}</Text>
             <Button onClick={() => dispatch.user.logout()} w={"100%"}>
               Log Out
             </Button>
             <Button onClick={() => navigate("/create")} w={"100%"}>
               Create Item
+            </Button>
+            <Button onClick={() => navigate("/buy")} w={"100%"}>
+              Buy Vexcoins
             </Button>
           </>
         )}

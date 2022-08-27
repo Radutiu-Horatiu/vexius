@@ -5,6 +5,7 @@ import GlobalLoading from "./components/GlobalLoading";
 import RequireAuth from "./components/routeMiddlewares/RequireAuth";
 import Screen from "./components/Screen";
 
+const BuyVexcoins = React.lazy(() => import("./views/BuyVexcoins"));
 const Home = React.lazy(() => import("./views/Home"));
 const CreateItem = React.lazy(() => import("./views/CreateItem"));
 const Login = React.lazy(() => import("./views/Login"));
@@ -22,6 +23,19 @@ const App = () => {
               <Home />
             </Screen>
           </React.Suspense>
+        }
+      />
+
+      <Route
+        path="/buy"
+        element={
+          <RequireAuth>
+            <React.Suspense fallback={<GlobalLoading />}>
+              <Screen>
+                <BuyVexcoins />
+              </Screen>
+            </React.Suspense>
+          </RequireAuth>
         }
       />
 
