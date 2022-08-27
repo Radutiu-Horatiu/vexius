@@ -34,6 +34,10 @@ app.post('/getUser', async (req, res) => {
   const { privateKey } = req.body;
 
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
     const response = await smartContract.methods.getUser(privateKey).call();
     return res.status(200).send({
       privateKey: response[0],
@@ -50,6 +54,10 @@ app.post('/getBalance', async (req, res) => {
   const { publicKey } = req.body;
 
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
     const response = await smartContract.methods.getBalance(publicKey).call();
     return res.status(200).send(response);
   } catch (e) {
@@ -101,6 +109,10 @@ app.post('/sendVexcoins', async (req, res) => {
   const { privateKey, amount } = req.body;
 
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
     const tx = smartContract.methods.sendVexcoins(privateKey, amount);
 
     const receipt = await tx.send({
@@ -118,6 +130,10 @@ app.post('/transferCoins', async (req, res) => {
   const { fromPrivateKey, toPublicKey, amount } = req.body;
 
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
     const tx = smartContract.methods.transferCoins(
       fromPrivateKey,
       toPublicKey,
@@ -139,6 +155,10 @@ app.post('/getItem', async (req, res) => {
   const { id } = req.body;
 
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
     const response = await smartContract.methods.getItem(id).call();
     return res.status(200).send({ itemId: response[0], ownerId: response[1] });
   } catch (e) {
@@ -174,6 +194,10 @@ app.post('/transferItem', async (req, res) => {
   const { itemId, fromPrivateKey, toPublicKey, cost } = req.body;
 
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
     const tx = smartContract.methods.transferItem(
       itemId,
       fromPrivateKey,
