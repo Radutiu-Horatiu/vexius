@@ -1,30 +1,62 @@
 import {
   Box,
   Button,
+  Grid,
+  GridItem,
   Heading,
   Input,
-  Radio,
-  RadioGroup,
-  Stack,
+  Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
 import React from "react";
 import { useState } from "react";
 import { useRef } from "react";
-import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import SignTransaction from "../components/SignTransaction";
+
+import { auth, db } from "../firebase";
 
 const CreateItem = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const nameRef = useRef("");
   const priceRef = useRef("");
   const [category, setCategory] = useState(null);
 
-  const createItem = () => {
+  const createItem = async privateKey => {
     let name = nameRef.current.value;
     let price = priceRef.current.value;
 
-    if (!name || !price || !category) return;
+    if (!name || !price || !category || !privateKey) return;
+
+    const id = uuidv4();
+
+    // save item to firestore
+    setDoc(doc(db, "items", id), {
+      name,
+      price,
+      category,
+      id,
+    });
+
+    // send item to blockchain
+    const bearerToken = await auth.currentUser.getIdToken(true);
+
+    await axios.request({
+      method: "POST",
+      url: `${process.env.REACT_APP_BACKEND_URL}addNewItem`,
+      data: {
+        itemId: id,
+        ownerId: privateKey,
+      },
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
   };
 
   return (
@@ -32,28 +64,63 @@ const CreateItem = () => {
       <VStack w={"50vw"}>
         <Heading>Create Item</Heading>
         <Input placeholder="Name" ref={nameRef} />
-        <Input placeholder="How much $" ref={priceRef} />
-        <RadioGroup onChange={setCategory} value={category}>
-          <Stack>
-            <Radio value="Watch">Watch</Radio>
-            <Radio value="Jewelry">Jewelry</Radio>
-            <Radio value="Clothing">Clothing</Radio>
-            <Radio value="Shoe">Shoe</Radio>
-            <Radio value="Handbag">Handbag</Radio>
-            <Radio value="Accessory">Accessory</Radio>
-            <Radio value="Beauty">Beauty</Radio>
-            <Radio value="Automobile">Automobile</Radio>
-            <Radio value="Fine Wine">Fine Wine</Radio>
-          </Stack>
-        </RadioGroup>
-        <Button w="100%" onClick={createItem}>
-          Create
+        <Input placeholder="$" ref={priceRef} />
+        <SignTransaction
+          isOpen={isOpen}
+          onClose={onClose}
+          callbackFunction={createItem}
+        />
+        <Grid templateColumns="repeat(3, 1fr)" w={"100%"} gap={3}>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Watches")}>
+              <Text>Watches</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Jewelry")}>
+              <Text>Jewelry</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Clothing")}>
+              <Text>Clothing</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Shoes")}>
+              <Text>Shoes</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Handbags")}>
+              <Text>Handbags</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Accessories")}>
+              <Text>Accessories</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Beauty")}>
+              <Text>Beauty</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Automobiles")}>
+              <Text>Automobiles</Text>
+            </Button>
+          </GridItem>
+          <GridItem w="100%">
+            <Button w={"100%"} onClick={() => setCategory("Fine Wines")}>
+              <Text>Fine Wines</Text>
+            </Button>
+          </GridItem>
+        </Grid>
+        <Button w="100%" onClick={onOpen}>
+          Confirm
         </Button>
-        <Button
-          leftIcon={<FaArrowLeft />}
-          w="100%"
-          onClick={() => navigate("/")}
-        >
+        <Button w="100%" onClick={() => navigate("/")}>
           Back Home
         </Button>
       </VStack>

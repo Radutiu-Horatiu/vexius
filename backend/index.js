@@ -50,7 +50,7 @@ app.post('/addNewUser', async (req, res) => {
   try {
     // verify authorization
     let bearerToken = req.headers.authorization.split(' ')[1];
-    auth.verifyIdToken(bearerToken);
+    await auth.verifyIdToken(bearerToken);
 
     // generate account private key and public key
     const web3Account = new Web3EthAccounts();
@@ -136,9 +136,15 @@ app.post('/getItem', async (req, res) => {
 
 /* Adds and creates a new item */
 app.post('/addNewItem', async (req, res) => {
-  const { itemId, ownerId } = req.body;
-
   try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
+    // get parameters
+    const { itemId, ownerId } = req.body;
+
+    // register item on blockchain
     const tx = smartContract.methods.addNewItem(itemId, ownerId);
 
     const receipt = await tx.send({

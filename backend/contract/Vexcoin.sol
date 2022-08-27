@@ -54,7 +54,7 @@ contract Vexcoin {
     }
 
     // Get user by private key
-    function getUser(string memory private_key) onlyOwner public view returns (User memory) {
+    function getUser(string memory private_key) public view returns (User memory) {
         User memory user = userByPrivateKey(private_key);
 
         // user must exist
@@ -64,7 +64,7 @@ contract Vexcoin {
     }
 
     // Add new user
-    function addNewUser(string memory private_key, int public_key) onlyOwner public {
+    function addNewUser(string memory private_key, int public_key) public {
         // if user does not exist yet
         if (!checkUserExists(private_key)) {
             // get index for element that will be added
@@ -85,7 +85,7 @@ contract Vexcoin {
     }
 
     // Get Vexcoin data
-    function getVexcoinData() onlyOwner public view returns (int, uint) {
+    function getVexcoinData() public view returns (int, uint) {
         return (vexcoin_amount, users.length - 1);
     }
 
@@ -101,7 +101,7 @@ contract Vexcoin {
     }
 
     // Transfer coins between users
-    function transferCoins(string memory from_private_key, int to_public_key, int amount) onlyOwner public {
+    function transferCoins(string memory from_private_key, int to_public_key, int amount) public {
         User memory user_from = userByPrivateKey(from_private_key);
         User memory user_to = userByPublicKey(to_public_key);
 
@@ -116,19 +116,19 @@ contract Vexcoin {
     }
 
     // Get item by id
-    function getItem(string memory itemId) onlyOwner public view returns (Item memory) {
+    function getItem(string memory itemId) public view returns (Item memory) {
         if (bytes(items[itemId].id).length != 0 ) {
             return items[itemId];
         } else revert ("Item does not exist.");
     }
 
     // Add and create new item
-    function addNewItem(string memory itemId, string memory owner_private_key) onlyOwner public {
+    function addNewItem(string memory itemId, string memory owner_private_key) public {
         User memory user = userByPrivateKey(owner_private_key);
 
         // user must exist
         if (checkUserExists(user.private_key)) {
-            // item does not exist
+            // item must not exist
             if (bytes(items[itemId].id).length == 0 ) {
                 Item memory newItem = Item(itemId, owner_private_key);
                 items[itemId] = newItem;
@@ -139,7 +139,7 @@ contract Vexcoin {
     }
 
     // Transfer items between users
-    function transferItem(string memory itemId, string memory from_private_key, int to_public_key, int cost) onlyOwner public {
+    function transferItem(string memory itemId, string memory from_private_key, int to_public_key, int cost) public {
         User memory user_from = userByPrivateKey(from_private_key);
         User memory user_to = userByPublicKey(to_public_key);
 
@@ -156,7 +156,7 @@ contract Vexcoin {
                         items[itemId].owner_private_key = user_to.private_key;
                     } else revert ("Not enough balance.");
                 } else revert ("User does not own this item.");
-            } else revert ("Cant transfer to same user.");
+            } else revert ("Can't transfer to same user.");
         } else revert ("Users do not exist.");
     }
 }
