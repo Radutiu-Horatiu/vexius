@@ -1,90 +1,91 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Center, Flex } from "@chakra-ui/react";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import GlobalLoading from "./components/GlobalLoading";
 import RequireAuth from "./components/routeMiddlewares/RequireAuth";
 import Screen from "./components/Screen";
+import Navbar from "./components/Navbar";
+import "./App.css";
 
 const BuyVexcoins = React.lazy(() => import("./views/BuyVexcoins"));
 const Home = React.lazy(() => import("./views/Home"));
 const CreateItem = React.lazy(() => import("./views/CreateItem"));
-const Login = React.lazy(() => import("./views/Login"));
 const Success = React.lazy(() => import("./views/Success"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
 const App = () => {
+  const location = useLocation();
+
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <React.Suspense fallback={<GlobalLoading />}>
-            <Screen>
-              <Home />
-            </Screen>
-          </React.Suspense>
-        }
-      />
+    <Center h={"100vh"} w="100vw">
+      <Flex w={"75vw"} h={"100%"}>
+        {(location.pathname === "/create" ||
+          location.pathname === "/buy" ||
+          location.pathname === "/") && <Navbar />}
 
-      <Route
-        path="/buy"
-        element={
-          <RequireAuth>
-            <React.Suspense fallback={<GlobalLoading />}>
-              <Screen>
-                <BuyVexcoins />
-              </Screen>
-            </React.Suspense>
-          </RequireAuth>
-        }
-      />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <React.Suspense fallback={<GlobalLoading />}>
+                <Screen name={"Home"}>
+                  <Home />
+                </Screen>
+              </React.Suspense>
+            }
+          />
 
-      <Route
-        path="/create"
-        element={
-          <RequireAuth>
-            <React.Suspense fallback={<GlobalLoading />}>
-              <Screen>
-                <CreateItem />
-              </Screen>
-            </React.Suspense>
-          </RequireAuth>
-        }
-      />
+          <Route
+            path="/buy"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"Get Vexcoins"}>
+                    <BuyVexcoins />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
 
-      <Route
-        path="/login"
-        element={
-          <React.Suspense fallback={<GlobalLoading />}>
-            <Screen>
-              <Login />
-            </Screen>
-          </React.Suspense>
-        }
-      />
+          <Route
+            path="/create"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"Create Item"}>
+                    <CreateItem />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
 
-      <Route
-        path="/success"
-        element={
-          <React.Suspense fallback={<GlobalLoading />}>
-            <Screen>
-              <Success />
-            </Screen>
-          </React.Suspense>
-        }
-      />
+          <Route
+            path="/success"
+            element={
+              <React.Suspense fallback={<GlobalLoading />}>
+                <Center h={"100vh"} w={"100vw"}>
+                  <Success />
+                </Center>
+              </React.Suspense>
+            }
+          />
 
-      <Route
-        path="*"
-        element={
-          <React.Suspense fallback={<GlobalLoading />}>
-            <Screen>
-              <PageNotFound />
-            </Screen>
-          </React.Suspense>
-        }
-      />
-    </Routes>
+          <Route
+            path="*"
+            element={
+              <React.Suspense fallback={<GlobalLoading />}>
+                <Center h={"100vh"} w={"100vw"}>
+                  <PageNotFound />
+                </Center>
+              </React.Suspense>
+            }
+          />
+        </Routes>
+      </Flex>
+    </Center>
   );
 };
 

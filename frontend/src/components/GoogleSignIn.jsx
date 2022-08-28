@@ -43,6 +43,7 @@ const GoogleSignIn = () => {
           email: user.email,
           fullName: user.displayName,
           publicKey: response.data.publicKey,
+          picture: user.photoURL,
           uid: user.uid,
         };
 
@@ -77,7 +78,7 @@ const GoogleSignIn = () => {
     <>
       {loading && <GlobalLoading text={loadingText} />}
       <Button onClick={googleSignIn} w={"100%"} leftIcon={<FaGoogle />}>
-        Sign In With Google
+        Google Login
       </Button>
     </>
   );

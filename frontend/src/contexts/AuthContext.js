@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
       unsubscribeUsersCollection();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, location]);
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (location?.state?.from?.pathname) {

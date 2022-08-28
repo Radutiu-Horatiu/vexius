@@ -1,0 +1,39 @@
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+}
+
+.darkModeScrollbar {
+  scrollbar-color: white transparent;
+}
+
+.lightModeScrollbar {
+  scrollbar-color: black transparent;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+*::-webkit-scrollbar-corner {
+  display: none;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+
+.darkModeScrollbar::-webkit-scrollbar-thumb {
+  background-color: white;
+}
+
+.lightModeScrollbar::-webkit-scrollbar-thumb {
+  background-color: black;
+}

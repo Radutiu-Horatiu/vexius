@@ -60,9 +60,9 @@ const CreateItem = () => {
   };
 
   return (
-    <Box>
+    <>
+      <Box bgColor={"rebeccapurple"} h="550vh"></Box>
       <VStack w={"50vw"}>
-        <Heading>Create Item</Heading>
         <Input placeholder="Name" ref={nameRef} />
         <Input placeholder="$" ref={priceRef} />
         <SignTransaction
@@ -120,11 +120,8 @@ const CreateItem = () => {
         <Button w="100%" onClick={onOpen}>
           Confirm
         </Button>
-        <Button w="100%" onClick={() => navigate("/")}>
-          Back Home
-        </Button>
       </VStack>
-    </Box>
+    </>
   );
 };
 

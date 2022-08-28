@@ -1,8 +1,8 @@
-import { useLocation, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useLocation, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { useAuth } from '../../contexts/AuthContext';
-import GlobalLoading from '../GlobalLoading';
+import { useAuth } from "../../contexts/AuthContext";
+import GlobalLoading from "../GlobalLoading";
 
 const RequireAuth = ({ children }) => {
   const isUserInitialized = useSelector(state => state.user.initialized);
@@ -16,7 +16,7 @@ const RequireAuth = ({ children }) => {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
 
   return children;

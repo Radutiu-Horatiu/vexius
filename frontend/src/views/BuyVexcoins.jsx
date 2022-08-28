@@ -42,7 +42,6 @@ const BuyVexcoins = () => {
   return (
     <Box>
       <VStack w={"50vw"}>
-        <Heading>Get Vexcoins</Heading>
         <Input placeholder="How many" ref={amountRef} />
         <SignTransaction
           isOpen={isOpen}
@@ -51,9 +50,6 @@ const BuyVexcoins = () => {
         />
         <Button w="100%" onClick={onOpen}>
           Buy
-        </Button>
-        <Button w="100%" onClick={() => navigate("/")}>
-          Back Home
         </Button>
       </VStack>
     </Box>
