@@ -8,7 +8,6 @@ const NavButton = ({ to, icon, text, disabled }) => {
       as={!disabled && ReactRouterLink}
       to={to}
       w="100%"
-      h={12}
       bg={"transparent"}
       disabled={disabled}
     >

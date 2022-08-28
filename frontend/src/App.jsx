@@ -11,6 +11,7 @@ import "./App.css";
 const BuyVexcoins = React.lazy(() => import("./views/BuyVexcoins"));
 const Home = React.lazy(() => import("./views/Home"));
 const CreateItem = React.lazy(() => import("./views/CreateItem"));
+const Profile = React.lazy(() => import("./views/Profile"));
 const Success = React.lazy(() => import("./views/Success"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
@@ -22,6 +23,7 @@ const App = () => {
       <Flex w={"75vw"} h={"100%"}>
         {(location.pathname === "/create" ||
           location.pathname === "/buy" ||
+          location.pathname === "/profile" ||
           location.pathname === "/") && <Navbar />}
 
         <Routes>
@@ -41,7 +43,7 @@ const App = () => {
             element={
               <RequireAuth>
                 <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Get Vexcoins"}>
+                  <Screen name={"Buy Vexcoins"}>
                     <BuyVexcoins />
                   </Screen>
                 </React.Suspense>
@@ -56,6 +58,19 @@ const App = () => {
                 <React.Suspense fallback={<GlobalLoading />}>
                   <Screen name={"Create Item"}>
                     <CreateItem />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"My Profile"}>
+                    <Profile />
                   </Screen>
                 </React.Suspense>
               </RequireAuth>

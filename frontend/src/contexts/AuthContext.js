@@ -6,6 +6,7 @@ import { doc, onSnapshot } from "@firebase/firestore";
 
 import { db, auth } from "../firebase";
 import { emptyFn } from "../utils/helpers";
+import useGetUserBalance from "../hooks/useGetUserBalance";
 
 const AuthContext = React.createContext();
 
@@ -16,6 +17,7 @@ const AuthProvider = ({ children }) => {
   const isUserInitialized = useSelector(state => state.user.initialized);
   const dispatch = useDispatch();
   const location = useLocation();
+  const balance = useGetUserBalance();
 
   const isAuthenticated = Boolean(user);
 
@@ -28,6 +30,7 @@ const AuthProvider = ({ children }) => {
           doc => {
             let data = doc.data();
             dispatch.user.setUser(data);
+            dispatch.user.setBalance(balance);
           }
         );
       } else {
@@ -40,7 +43,7 @@ const AuthProvider = ({ children }) => {
       unsubscribeUsersCollection();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, balance]);
 
   React.useEffect(() => {
     if (location?.state?.from?.pathname) {

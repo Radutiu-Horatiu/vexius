@@ -10,7 +10,8 @@ const Screen = ({ children, name }) => {
         {name}
       </Heading>
       <Box
-        maxH="94vh"
+        h="94vh"
+        w={"50vw"}
         overflowY={"scroll"}
         pr="1vh"
         className={

@@ -1,12 +1,12 @@
 import { Box, VStack } from "@chakra-ui/react";
 import React from "react";
 
-const Home = () => {
+const Profile = () => {
   return (
     <Box>
-      <VStack>Home</VStack>
+      <VStack>Profile</VStack>
     </Box>
   );
 };
 
-export default Home;
+export default Profile;

@@ -5,6 +5,7 @@ export const user = {
   state: {
     value: null,
     initialized: false,
+    balance: 0,
   },
 
   reducers: {
@@ -14,6 +15,9 @@ export const user = {
       }
 
       return { ...state, value: payload };
+    },
+    setBalance(state, payload) {
+      return { ...state, balance: parseInt(state.balance) + parseInt(payload) };
     },
   },
 

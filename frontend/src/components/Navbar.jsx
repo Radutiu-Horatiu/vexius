@@ -12,17 +12,15 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link as ReactRouterLink } from "react-router-dom";
 import {
   FaBitcoin,
   FaHome,
   FaPlus,
-  FaSignInAlt,
   FaSignOutAlt,
+  FaUser,
 } from "react-icons/fa";
 
 import { useAuth } from "../contexts/AuthContext";
-import useGetUserBalance from "../hooks/useGetUserBalance";
 import ColorModeSwitcher from "../components/ColorModeSwitcher";
 import NavButton from "./NavButton";
 import GoogleSignIn from "./GoogleSignIn";
@@ -31,7 +29,7 @@ const Navbar = () => {
   const { isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.value);
-  const balance = useGetUserBalance();
+  const balance = useSelector(state => state.user.balance);
   const emailColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
 
   return (
@@ -54,6 +52,12 @@ const Navbar = () => {
           Vexius
         </Heading>
         <NavButton to={"/"} icon={<FaHome />} text="Home" />
+        <NavButton
+          to={"/profile"}
+          icon={<FaUser />}
+          text="Profile"
+          disabled={!isAuthenticated}
+        />
         <NavButton
           to={"/create"}
           icon={<FaPlus />}

@@ -26,7 +26,7 @@ const GoogleSignIn = () => {
       const user = responseFromAuth.user;
 
       if (isNewUser) {
-        setLoadingText("Saving on blockchain");
+        setLoadingText("Saving on blockchain..");
 
         // make call to register user on blockchain
         const bearerToken = await auth.currentUser.getIdToken(true);

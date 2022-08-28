@@ -19,11 +19,23 @@ export const theme = extendTheme({
       variants: {
         solid: props => ({
           bg: props.colorMode === "dark" ? "whiteAlpha.200" : "blackAlpha.200",
+          borderRadius: 25,
+          h: 45,
           _hover: {
             bg:
               props.colorMode === "dark" ? "whiteAlpha.300" : "blackAlpha.300",
           },
         }),
+      },
+    },
+    Input: {
+      variants: {
+        outline: {
+          field: {
+            borderRadius: 25,
+            h: 45,
+          },
+        },
       },
     },
   },

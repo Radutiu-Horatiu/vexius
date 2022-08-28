@@ -1,17 +1,21 @@
 import React, { useRef } from "react";
 import {
   Button,
+  Flex,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
+import { FaCheck } from "react-icons/fa";
 
 const GetPrivateKey = ({ isOpen, onClose, callbackFunction }) => {
   const privateKeyRef = useRef("");
+  const bgColor = useColorModeValue("whiteAlpha.800", "whiteAlpha.100");
 
   const confirm = () => {
     let privateKey = privateKeyRef.current.value;
@@ -26,15 +30,17 @@ const GetPrivateKey = ({ isOpen, onClose, callbackFunction }) => {
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={bgColor}>
         <ModalHeader>Sign Transaction</ModalHeader>
         <ModalBody>
-          <VStack w={"100%"}>
-            <Input placeholder="Private key" ref={privateKeyRef} />
-            <Button onClick={confirm} w={"100%"}>
-              Confirm
-            </Button>
-          </VStack>
+          <Flex>
+            <VStack w={"100%"}>
+              <Input placeholder="Private key" ref={privateKeyRef} />
+              <Button onClick={confirm} w={"100%"} leftIcon={<FaCheck />}>
+                Confirm
+              </Button>
+            </VStack>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
