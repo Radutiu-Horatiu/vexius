@@ -22,7 +22,7 @@ const App = () => {
 
   return (
     <Center h={"100vh"} w="100vw">
-      <Flex w={"75vw"} h={"100%"}>
+      <Flex h={"100%"}>
         {(location.pathname === "/create" ||
           location.pathname === "/buy" ||
           location.pathname === "/profile" ||

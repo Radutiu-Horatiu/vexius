@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <Flex
-      w={"30%"}
+      w={"15vw"}
       h="100%"
       justifyContent="space-between"
       flexDir={"column"}
@@ -97,22 +97,17 @@ const Navbar = () => {
           <VStack spacing={4}>
             <Flex w="100%" align="center" justify={"space-between"}>
               <Flex align="center">
-                <Avatar size="md" name={user.fullName} src={user?.picture} />
+                <Avatar size="lg" name={user.fullName} src={user?.picture} />
                 <Box ml={2}>
-                  <Text fontSize="lg">{user.fullName}</Text>
+                  <Text fontSize="md">{user.fullName}</Text>
                   <Text fontSize={"xs"} color={emailColor}>
                     {user.email}
                   </Text>
+                  <Text fontSize="lg" letterSpacing={"wider"}>
+                    {balance} VX
+                  </Text>
                 </Box>
               </Flex>
-              <Text
-                textAlign={"right"}
-                fontSize="xl"
-                fontWeight={"light"}
-                letterSpacing={"wider"}
-              >
-                {balance} VX
-              </Text>
             </Flex>
 
             <HStack w={"100%"}>
