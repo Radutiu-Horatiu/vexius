@@ -1,64 +1,57 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "@firebase/auth";
-import { doc, onSnapshot } from "@firebase/firestore";
+import { doc, getDoc } from "@firebase/firestore";
 
 import { db, auth } from "../firebase";
-import { emptyFn } from "../utils/helpers";
-import useGetUserBalance from "../hooks/useGetUserBalance";
+import { getUserBalance, getVexcoinData } from "../utils/helpers";
 
 const AuthContext = React.createContext();
 
 const useAuth = () => React.useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
-  const user = useSelector(state => state.user.value);
   const isUserInitialized = useSelector(state => state.user.initialized);
+  const user = useSelector(state => state.user.value);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const balance = useGetUserBalance();
-
   const isAuthenticated = Boolean(user);
 
-  React.useEffect(() => {
-    let unsubscribeUsersCollection = emptyFn;
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        unsubscribeUsersCollection = onSnapshot(
-          doc(db, "users", user.uid),
-          doc => {
-            let data = doc.data();
-            dispatch.user.setUser(data);
-            dispatch.user.setBalance(balance);
-          }
-        );
+  // get user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async res => {
+      if (res) {
+        // get userData from firestore
+        const resp = await getDoc(doc(db, "users", res.uid));
+        const userData = resp.data();
+
+        // set user
+        dispatch.user.setUser(userData);
       } else {
         dispatch.user.setUser(null);
       }
     });
 
-    return () => {
-      unsubscribe();
-      unsubscribeUsersCollection();
-    };
+    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, balance]);
+  }, []);
 
-  React.useEffect(() => {
-    if (location?.state?.from?.pathname) {
-      localStorage.setItem(
-        "redirectWhereCameFrom",
-        location?.state?.from?.pathname
-      );
-    }
+  // get user balance and vexcoin data
+  useEffect(() => {
+    if (!isAuthenticated) return;
 
-    return () => {
-      if (!["/login"].includes(location.pathname)) {
-        localStorage.removeItem("redirectWhereCameFrom");
-      }
-    };
-  }, [location]);
+    (async () => {
+      // set user balance
+      const bearerToken = await auth.currentUser.getIdToken(true);
+
+      const balance = await getUserBalance(user.publicKey, bearerToken);
+
+      const vexcoinData = await getVexcoinData(bearerToken);
+
+      dispatch.vexcoinData.setData(vexcoinData);
+      dispatch.user.setBalance(balance);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   const value = {
     isAuthenticated,

@@ -9,15 +9,15 @@ import {
   useDisclosure,
   useToast,
   VStack,
+  chakra,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaArrowCircleRight } from "react-icons/fa";
 
 import { auth } from "../firebase";
 import SignTransaction from "../components/SignTransaction";
 import GlobalLoading from "../components/GlobalLoading";
-import useGetVexcoinData from "../hooks/useGetVexcoinData";
 
 const BuyVexcoins = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,7 +25,7 @@ const BuyVexcoins = () => {
   const amountRef = useRef(null);
   const toast = useToast();
   const dispatch = useDispatch();
-  const vexcoinData = useGetVexcoinData();
+  const vexcoinData = useSelector(state => state.vexcoinData);
 
   const buyVexcoins = async privateKey => {
     let amount = amountRef.current.value;
@@ -44,23 +44,36 @@ const BuyVexcoins = () => {
 
     setLoading(true);
 
-    // make request to blockchain to send vexcoins
-    const bearerToken = await auth.currentUser.getIdToken(true);
+    try {
+      // make request to blockchain to send vexcoins
+      const bearerToken = await auth.currentUser.getIdToken(true);
 
-    await axios.request({
-      method: "POST",
-      url: `${process.env.REACT_APP_BACKEND_URL}sendVexcoins`,
-      data: {
-        privateKey,
-        amount,
-      },
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    });
+      await axios.request({
+        method: "POST",
+        url: `${process.env.REACT_APP_BACKEND_URL}sendVexcoins`,
+        data: {
+          privateKey,
+          amount,
+        },
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+      });
+    } catch (error) {
+      toast({
+        position: "bottom-right",
+        title: "Error",
+        description: "Something went wrong.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    } finally {
+      setLoading(false);
+    }
 
     dispatch.user.setBalance(amount);
-    setLoading(false);
 
     toast({
       position: "bottom-right",
@@ -71,6 +84,8 @@ const BuyVexcoins = () => {
       isClosable: true,
     });
   };
+
+  if (!vexcoinData.initialized) return <GlobalLoading />;
 
   return (
     <Flex h={"100%"} flexDir="column" justify="center">
@@ -121,6 +136,22 @@ const BuyVexcoins = () => {
         </Box>
 
         {/* Info */}
+        <Box>
+          <Text
+            textAlign={"center"}
+            textTransform="uppercase"
+            fontWeight={"light"}
+            fontSize="md"
+          >
+            Get your vexcoins now and be an early bird{" "}
+            <chakra.span fontWeight="medium">
+              1 VX = 1$ / (number of thousand of users)
+            </chakra.span>
+          </Text>
+          <Text textAlign={"center"} fontWeight={"light"} fontSize="xs">
+            (This is a beta version and right now no real money is in use.)
+          </Text>
+        </Box>
       </VStack>
     </Flex>
   );

@@ -15,7 +15,8 @@ import { FaCheck } from "react-icons/fa";
 
 const GetPrivateKey = ({ isOpen, onClose, callbackFunction }) => {
   const privateKeyRef = useRef("");
-  const bgColor = useColorModeValue("whiteAlpha.800", "whiteAlpha.100");
+  const bgColorContent = useColorModeValue("white", "black");
+  const bgColorOverlay = useColorModeValue("blackAlpha.300", "whiteAlpha.200");
 
   const confirm = () => {
     let privateKey = privateKeyRef.current.value;
@@ -29,8 +30,8 @@ const GetPrivateKey = ({ isOpen, onClose, callbackFunction }) => {
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
-      <ModalOverlay />
-      <ModalContent bg={bgColor}>
+      <ModalOverlay bg={bgColorOverlay} />
+      <ModalContent bg={bgColorContent} p={5}>
         <ModalHeader>Sign Transaction</ModalHeader>
         <ModalBody>
           <Flex>
