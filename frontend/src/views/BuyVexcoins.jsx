@@ -9,7 +9,6 @@ import {
   useDisclosure,
   useToast,
   VStack,
-  chakra,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";

@@ -13,6 +13,8 @@ const Home = React.lazy(() => import("./views/Home"));
 const CreateItem = React.lazy(() => import("./views/CreateItem"));
 const Profile = React.lazy(() => import("./views/Profile"));
 const Success = React.lazy(() => import("./views/Success"));
+const Transfer = React.lazy(() => import("./views/Transfer"));
+const Send = React.lazy(() => import("./views/Send"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
 const App = () => {
@@ -24,6 +26,8 @@ const App = () => {
         {(location.pathname === "/create" ||
           location.pathname === "/buy" ||
           location.pathname === "/profile" ||
+          location.pathname === "/send" ||
+          location.pathname === "/transfer" ||
           location.pathname === "/") && <Navbar />}
 
         <Routes>
@@ -45,6 +49,32 @@ const App = () => {
                 <React.Suspense fallback={<GlobalLoading />}>
                   <Screen name={"Buy Vexcoins"}>
                     <BuyVexcoins />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/send"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"Send Vexcoins"}>
+                    <Send />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/transfer"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"Transfer Items"}>
+                    <Transfer />
                   </Screen>
                 </React.Suspense>
               </RequireAuth>

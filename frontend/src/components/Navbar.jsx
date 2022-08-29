@@ -13,7 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  FaArrowRight,
   FaBitcoin,
+  FaExchangeAlt,
   FaHome,
   FaPlus,
   FaSignOutAlt,
@@ -65,9 +67,21 @@ const Navbar = () => {
           disabled={!isAuthenticated}
         />
         <NavButton
+          to={"/transfer"}
+          icon={<FaExchangeAlt />}
+          text="Transfer"
+          disabled={!isAuthenticated}
+        />
+        <NavButton
+          to={"/send"}
+          icon={<FaArrowRight />}
+          text="Send"
+          disabled={!isAuthenticated}
+        />
+        <NavButton
           to={"/buy"}
           icon={<FaBitcoin />}
-          text="Get Vexcoins"
+          text="Buy Vexcoins"
           disabled={!isAuthenticated}
         />
       </Stack>

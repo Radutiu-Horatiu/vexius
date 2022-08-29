@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
 import React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import GlobalLoading from "../components/GlobalLoading";
