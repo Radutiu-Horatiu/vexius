@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 contract Vexcoin {
     /* Vexcoin */
-    int vexcoin_amount = 100000000;
+    int vexcoin_amount = 21000000;
     address owner;
 
     constructor() {
@@ -32,7 +32,13 @@ contract Vexcoin {
     /* Item */
     struct Item {
       string id;
-      string owner_private_key;  
+      int currentOwner;  
+      OwnerHistory[] ownerHistory;
+    }
+
+    struct OwnerHistory {
+        uint date;
+        int owner;
     }
 
     mapping(string => Item) private items;
@@ -63,6 +69,27 @@ contract Vexcoin {
         else revert ("User does not exist.");
     }
 
+    // Transfer coins to user balance
+    function sendVexcoins(string memory private_key, int amount) onlyOwner public {
+        User memory user = userByPrivateKey(private_key);
+
+        // user must exist and number of coins to be bought must be available
+        if (checkUserExists(user.private_key) && amount <= vexcoin_amount) {
+            users[user.index].balance += amount;
+            vexcoin_amount -= amount;
+        } else revert ("User does not exist or no more coins available.");
+    }
+
+    // Get balance of user by public key, owner only
+    function getBalance(int public_key) onlyOwner public view returns (int) {
+        User memory user = userByPublicKey(public_key);
+
+        // user must exist
+        if (checkUserExists(user.private_key))
+            return user.balance;
+        else revert ("User does not exist.");
+    }
+
     // Add new user
     function addNewUser(string memory private_key, int public_key) public {
         // if user does not exist yet
@@ -89,27 +116,6 @@ contract Vexcoin {
         return (vexcoin_amount, users.length - 1);
     }
 
-    // Transfer coins to user balance
-    function sendVexcoins(int to_public_key, int amount) onlyOwner public {
-        User memory user = userByPublicKey(to_public_key);
-
-        // user must exist and number of coins to be bought must be available
-        if (checkUserExists(user.private_key) && amount <= vexcoin_amount) {
-            users[user.index].balance += amount;
-            vexcoin_amount -= amount;
-        } else revert ("User does not exist or no more coins available.");
-    }
-
-    // Get balance of user by public key, owner only
-    function getBalance(int public_key) onlyOwner public view returns (int) {
-        User memory user = userByPublicKey(public_key);
-
-        // user must exist
-        if (checkUserExists(user.private_key))
-            return user.balance;
-        else revert ("User does not exist.");
-    }
-
     // Transfer coins between users
     function transferCoins(string memory from_private_key, int to_public_key, int amount) public {
         User memory user_from = userByPrivateKey(from_private_key);
@@ -133,15 +139,17 @@ contract Vexcoin {
     }
 
     // Add and create new item
-    function addNewItem(string memory itemId, string memory owner_private_key) public {
-        User memory user = userByPrivateKey(owner_private_key);
+    function addNewItem(string memory itemId, int owner_public_key) public {
+        User memory user = userByPublicKey(owner_public_key);
 
         // user must exist
         if (checkUserExists(user.private_key)) {
             // item must not exist
             if (bytes(items[itemId].id).length == 0 ) {
-                Item memory newItem = Item(itemId, owner_private_key);
-                items[itemId] = newItem;
+                Item storage item = items[itemId];
+                item.id = itemId;
+                item.currentOwner = owner_public_key;
+                item.ownerHistory.push(OwnerHistory(block.timestamp, owner_public_key));
             } 
             // already there
             else revert ("Item already exists.");
@@ -158,12 +166,15 @@ contract Vexcoin {
             // 'from' user must be different than 'to' user
             if (user_from.index != user_to.index) {
                 // item owner must be 'from' user
-                if (keccak256(bytes(items[itemId].owner_private_key)) == keccak256(bytes(user_from.private_key))) {
+                if (items[itemId].currentOwner == user_from.public_key) {
                     // user receving the item must have available balance to pay
                     if (users[user_to.index].balance >= cost) {
                         users[user_from.index].balance += cost;
                         users[user_to.index].balance -= cost;
-                        items[itemId].owner_private_key = user_to.private_key;
+
+                        // change currentOwner of item and add new owner to history
+                        items[itemId].currentOwner = user_to.public_key;
+                        items[itemId].ownerHistory.push(OwnerHistory(block.timestamp, to_public_key));
                     } else revert ("Not enough balance.");
                 } else revert ("User does not own this item.");
             } else revert ("Can't transfer to same user.");

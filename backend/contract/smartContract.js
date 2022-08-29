@@ -3,11 +3,6 @@ const Web3 = require('web3');
 // Vexcoin ABI
 const abi = [
   {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
     inputs: [
       {
         internalType: 'string',
@@ -15,9 +10,9 @@ const abi = [
         type: 'string',
       },
       {
-        internalType: 'string',
-        name: 'owner_private_key',
-        type: 'string',
+        internalType: 'int256',
+        name: 'owner_public_key',
+        type: 'int256',
       },
     ],
     name: 'addNewItem',
@@ -41,115 +36,6 @@ const abi = [
     name: 'addNewUser',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'int256',
-        name: 'public_key',
-        type: 'int256',
-      },
-    ],
-    name: 'getBalance',
-    outputs: [
-      {
-        internalType: 'int256',
-        name: '',
-        type: 'int256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'itemId',
-        type: 'string',
-      },
-    ],
-    name: 'getItem',
-    outputs: [
-      {
-        components: [
-          {
-            internalType: 'string',
-            name: 'id',
-            type: 'string',
-          },
-          {
-            internalType: 'string',
-            name: 'owner_private_key',
-            type: 'string',
-          },
-        ],
-        internalType: 'struct Vexcoin.Item',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'private_key',
-        type: 'string',
-      },
-    ],
-    name: 'getUser',
-    outputs: [
-      {
-        components: [
-          {
-            internalType: 'string',
-            name: 'private_key',
-            type: 'string',
-          },
-          {
-            internalType: 'int256',
-            name: 'public_key',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'balance',
-            type: 'int256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'index',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct Vexcoin.User',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getVexcoinData',
-    outputs: [
-      {
-        internalType: 'int256',
-        name: '',
-        type: 'int256',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -221,6 +107,137 @@ const abi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    inputs: [],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'int256',
+        name: 'public_key',
+        type: 'int256',
+      },
+    ],
+    name: 'getBalance',
+    outputs: [
+      {
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'itemId',
+        type: 'string',
+      },
+    ],
+    name: 'getItem',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'id',
+            type: 'string',
+          },
+          {
+            internalType: 'int256',
+            name: 'currentOwner',
+            type: 'int256',
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'date',
+                type: 'uint256',
+              },
+              {
+                internalType: 'int256',
+                name: 'owner',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct Vexcoin.OwnerHistory[]',
+            name: 'ownerHistory',
+            type: 'tuple[]',
+          },
+        ],
+        internalType: 'struct Vexcoin.Item',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'private_key',
+        type: 'string',
+      },
+    ],
+    name: 'getUser',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'private_key',
+            type: 'string',
+          },
+          {
+            internalType: 'int256',
+            name: 'public_key',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
+            name: 'balance',
+            type: 'int256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'index',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct Vexcoin.User',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getVexcoinData',
+    outputs: [
+      {
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 
 // Create web3 instance and connecte to Coinex Testnet
@@ -237,7 +254,7 @@ web3.eth.accounts.wallet.add(signer);
 // Creating a Contract instance
 const smartContract = new web3.eth.Contract(
   abi,
-  '0x4581059c244b5B3D4Bf42A38Af94655381E8c82F',
+  '0xBF260c63d032047ebDCcE89fA2F2bEED182A31D6',
   {
     from: signer.address,
   }

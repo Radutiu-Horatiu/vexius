@@ -49,6 +49,27 @@ app.post('/getUser', async (req, res) => {
   }
 });
 
+/* Transfer coins to user balance */
+app.post('/sendVexcoins', async (req, res) => {
+  const { privateKey, amount } = req.body;
+
+  try {
+    // verify authorization
+    let bearerToken = req.headers.authorization.split(' ')[1];
+    await auth.verifyIdToken(bearerToken);
+
+    const tx = smartContract.methods.sendVexcoins(privateKey, amount);
+
+    const receipt = await tx.send({
+      gas: await tx.estimateGas(),
+    });
+
+    return res.status(200).send(receipt);
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+});
+
 /* Get user by id */
 app.post('/getBalance', async (req, res) => {
   const { publicKey } = req.body;
@@ -105,27 +126,6 @@ app.post('/getVexcoinData', async (req, res) => {
 });
 
 /* Transfer coins to user balance */
-app.post('/sendVexcoins', async (req, res) => {
-  const { privateKey, amount } = req.body;
-
-  try {
-    // verify authorization
-    let bearerToken = req.headers.authorization.split(' ')[1];
-    await auth.verifyIdToken(bearerToken);
-
-    const tx = smartContract.methods.sendVexcoins(privateKey, amount);
-
-    const receipt = await tx.send({
-      gas: await tx.estimateGas(),
-    });
-
-    return res.status(200).send(receipt);
-  } catch (e) {
-    return res.status(500).send(e.message);
-  }
-});
-
-/* Transfer coins to user balance */
 app.post('/transferCoins', async (req, res) => {
   const { fromPrivateKey, toPublicKey, amount } = req.body;
 
@@ -174,10 +174,10 @@ app.post('/addNewItem', async (req, res) => {
     await auth.verifyIdToken(bearerToken);
 
     // get parameters
-    const { itemId, ownerId } = req.body;
+    const { itemId, ownerPublicKey } = req.body;
 
     // register item on blockchain
-    const tx = smartContract.methods.addNewItem(itemId, ownerId);
+    const tx = smartContract.methods.addNewItem(itemId, ownerPublicKey);
 
     const receipt = await tx.send({
       gas: await tx.estimateGas(),
