@@ -4,40 +4,51 @@ import {
   GridItem,
   Input,
   Text,
-  useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
 import React from "react";
-import { useState } from "react";
-import { useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import SignTransaction from "../components/SignTransaction";
+import GlobalLoading from "../components/GlobalLoading";
 
 import { auth, db } from "../firebase";
 
 const CreateItem = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const user = useSelector(state => state.user.value);
   const nameRef = useRef("");
   const priceRef = useRef("");
+  const toast = useToast();
+  const dispatch = useDispatch();
   const [category, setCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const createItem = async privateKey => {
+  const createItem = async () => {
     let name = nameRef.current.value;
     let price = priceRef.current.value;
 
-    if (!name || !price || !category || !privateKey) return;
+    if (!name || !price || !category || !user) return;
 
+    setLoading(true);
     const id = uuidv4();
 
-    // save item to firestore
-    setDoc(doc(db, "items", id), {
+    const item = {
+      id,
+      addedAt: new Date(),
+      currentOwner: user.publicKey,
       name,
       price,
       category,
-      id,
-    });
+    };
+
+    // dispatch
+    dispatch.items.addItem(item);
+
+    // save item to firestore
+    setDoc(doc(db, "items", id), item);
 
     // send item to blockchain
     const bearerToken = await auth.currentUser.getIdToken(true);
@@ -47,23 +58,31 @@ const CreateItem = () => {
       url: `${process.env.REACT_APP_BACKEND_URL}addNewItem`,
       data: {
         itemId: id,
-        ownerId: privateKey,
+        ownerPublicKey: user.publicKey,
       },
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },
     });
+
+    setLoading(false);
+
+    toast({
+      position: "bottom-right",
+      title: "Success",
+      description: "Item stored on the blockchain for a very long time.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   };
+
+  if (loading) return <GlobalLoading text={"Storing item safely.."} />;
 
   return (
     <VStack>
       <Input placeholder="Name" ref={nameRef} />
       <Input placeholder="$" ref={priceRef} />
-      <SignTransaction
-        isOpen={isOpen}
-        onClose={onClose}
-        callbackFunction={createItem}
-      />
       <Grid templateColumns="repeat(3, 1fr)" w={"100%"} gap={3}>
         <GridItem w="100%">
           <Button w={"100%"} onClick={() => setCategory("Watches")}>
@@ -111,7 +130,7 @@ const CreateItem = () => {
           </Button>
         </GridItem>
       </Grid>
-      <Button w="100%" onClick={onOpen}>
+      <Button w="100%" onClick={createItem}>
         Confirm
       </Button>
     </VStack>

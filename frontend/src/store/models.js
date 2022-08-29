@@ -47,5 +47,37 @@ export const vexcoinData = {
         vexcoin_amount: payload.vexcoin_amount,
       };
     },
+    decreaseAmount(state, payload) {
+      return {
+        ...state,
+        vexcoin_amount: parseInt(state.vexcoin_amount) - parseInt(payload),
+      };
+    },
+  },
+};
+
+export const items = {
+  state: {
+    data: [],
+    initialized: false,
+  },
+
+  reducers: {
+    setData(state, payload) {
+      if (!state.initialized) {
+        state.initialized = true;
+      }
+
+      return {
+        ...state,
+        data: payload,
+      };
+    },
+    addItem(state, payload) {
+      let items = state.data;
+      items.push(payload);
+
+      return { ...state, data: items };
+    },
   },
 };

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "@firebase/auth";
-import { doc, getDoc } from "@firebase/firestore";
+import { doc, getDoc, getDocs, collection } from "@firebase/firestore";
 
 import { db, auth } from "../firebase";
 import { getUserBalance, getVexcoinData } from "../utils/helpers";
@@ -52,6 +52,16 @@ const AuthProvider = ({ children }) => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
+
+  // get home feed items
+  useEffect(() => {
+    (async () => {
+      let allItems = await getDocs(collection(db, "items"));
+      allItems = allItems.docs.map(doc => doc.data());
+      dispatch.items.setData(allItems);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = {
     isAuthenticated,

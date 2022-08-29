@@ -42,6 +42,18 @@ const BuyVexcoins = () => {
       return;
     }
 
+    if (amount > 1000) {
+      toast({
+        position: "bottom-right",
+        title: "Error",
+        description: "Can't order more than 1000 at a time right now.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -74,6 +86,8 @@ const BuyVexcoins = () => {
     }
 
     dispatch.user.setBalance(amount);
+    dispatch.vexcoinData.decreaseAmount(amount);
+    amountRef.current.value = "";
 
     toast({
       position: "bottom-right",
@@ -100,10 +114,10 @@ const BuyVexcoins = () => {
         <Flex justify={"space-evenly"} w="100%">
           <VStack>
             <Text fontWeight={"light"} textTransform="uppercase">
-              Vexcoins
+              Vexcoins Supply
             </Text>
             <Heading>
-              {(parseInt(vexcoinData.vexcoin_amount) - parseInt(12345678))
+              {vexcoinData.vexcoin_amount
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </Heading>
@@ -140,13 +154,10 @@ const BuyVexcoins = () => {
           <Text
             textAlign={"center"}
             textTransform="uppercase"
-            fontWeight={"light"}
+            fontWeight={"medium"}
             fontSize="md"
           >
-            Get your vexcoins now and be an early bird{" "}
-            <chakra.span fontWeight="medium">
-              1 VX = 1$ / (number of thousand of users)
-            </chakra.span>
+            1 VX = 1$ / (number of thousand of users)
           </Text>
           <Text textAlign={"center"} fontWeight={"light"} fontSize="xs">
             (This is a beta version and right now no real money is in use.)

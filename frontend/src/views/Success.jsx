@@ -17,10 +17,10 @@ const PageNotFound = React.lazy(() => import("./PageNotFound"));
 
 const Success = () => {
   const user = useSelector(state => state.user.value);
-  const { state } = useLocation();
-  const toast = useToast();
   const [hasCopied, setHasCopied] = useState(false);
+  const { state } = useLocation();
   const { onCopy } = useClipboard(state?.privateKey);
+  const toast = useToast();
   const navigate = useNavigate();
 
   const goHome = () => {
@@ -40,7 +40,7 @@ const Success = () => {
     });
   };
 
-  if (!state?.privateKey) return <PageNotFound />;
+  if (!state?.privateKey || !user) return <PageNotFound />;
 
   return (
     <Box>

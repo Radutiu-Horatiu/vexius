@@ -47,6 +47,8 @@ const GoogleSignIn = () => {
           uid: user.uid,
         };
 
+        dispatch.user.setUser(userData);
+
         // save user to firestore
         setDoc(doc(db, "users", user.uid), userData);
 
