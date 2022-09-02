@@ -10,6 +10,8 @@ const Home = () => {
 
   if (!items.initialized) return <GlobalLoading />;
 
+  console.log(items);
+
   return (
     <Box>
       <VStack>

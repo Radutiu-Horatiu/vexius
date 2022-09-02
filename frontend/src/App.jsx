@@ -13,12 +13,12 @@ const Home = React.lazy(() => import("./views/Home"));
 const CreateItem = React.lazy(() => import("./views/CreateItem"));
 const Profile = React.lazy(() => import("./views/Profile"));
 const Success = React.lazy(() => import("./views/Success"));
-const Transfer = React.lazy(() => import("./views/Transfer"));
-const Send = React.lazy(() => import("./views/Send"));
+const ItemScreen = React.lazy(() => import("./views/ItemScreen"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
 const App = () => {
   const location = useLocation();
+  console.log(location);
 
   return (
     <Center h={"100vh"} w="100vw">
@@ -28,6 +28,7 @@ const App = () => {
           location.pathname === "/profile" ||
           location.pathname === "/send" ||
           location.pathname === "/transfer" ||
+          location.pathname.split("/")[1] === "item" ||
           location.pathname === "/") && <Navbar />}
 
         <Routes>
@@ -35,7 +36,7 @@ const App = () => {
             path="/"
             element={
               <React.Suspense fallback={<GlobalLoading />}>
-                <Screen name={"Home"}>
+                <Screen name={"Home"} padding={0}>
                   <Home />
                 </Screen>
               </React.Suspense>
@@ -56,38 +57,25 @@ const App = () => {
           />
 
           <Route
-            path="/send"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Send Vexcoins"}>
-                    <Send />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/transfer"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Transfer Items"}>
-                    <Transfer />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
             path="/create"
             element={
               <RequireAuth>
                 <React.Suspense fallback={<GlobalLoading />}>
                   <Screen name={"Create Item"}>
                     <CreateItem />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/item/:id"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"Item"}>
+                    <ItemScreen />
                   </Screen>
                 </React.Suspense>
               </RequireAuth>

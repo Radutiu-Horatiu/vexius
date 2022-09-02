@@ -39,6 +39,7 @@ const CreateItem = () => {
       id,
       addedAt: new Date(),
       currentOwner: user.publicKey,
+      ownerName: user.fullName,
       name,
       price,
       category,

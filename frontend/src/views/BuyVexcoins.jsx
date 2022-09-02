@@ -17,6 +17,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import { auth } from "../firebase";
 import SignTransaction from "../components/SignTransaction";
 import GlobalLoading from "../components/GlobalLoading";
+import { formatNumber } from "../utils/helpers";
 
 const BuyVexcoins = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -115,11 +116,7 @@ const BuyVexcoins = () => {
             <Text fontWeight={"light"} textTransform="uppercase">
               Vexcoins Supply
             </Text>
-            <Heading>
-              {vexcoinData.vexcoin_amount
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            </Heading>
+            <Heading>{formatNumber(vexcoinData.vexcoin_amount)}</Heading>
           </VStack>
 
           <VStack>
@@ -127,9 +124,7 @@ const BuyVexcoins = () => {
               Total Users
             </Text>
             <Heading>
-              {(parseInt(vexcoinData.total_users) + parseInt(1500))
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {formatNumber(parseInt(vexcoinData.total_users) + parseInt(1500))}
             </Heading>
           </VStack>
         </Flex>
