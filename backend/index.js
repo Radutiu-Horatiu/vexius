@@ -160,7 +160,17 @@ app.post('/getItem', async (req, res) => {
     await auth.verifyIdToken(bearerToken);
 
     const response = await smartContract.methods.getItem(id).call();
-    return res.status(200).send({ itemId: response[0], ownerId: response[1] });
+
+    // construct owner history
+    const ownerHistory = response[2].map(
+      (el) => (el = { date: el[0], ownerPublicKey: el[1] })
+    );
+
+    return res.status(200).send({
+      itemId: response[0],
+      currentOwnerPublicKey: response[1],
+      ownerHistory,
+    });
   } catch (e) {
     return res.status(500).send(e.message);
   }

@@ -24,6 +24,7 @@ import { useAuth } from "../contexts/AuthContext";
 import ColorModeSwitcher from "../components/ColorModeSwitcher";
 import NavButton from "./NavButton";
 import GoogleSignIn from "./GoogleSignIn";
+import { formatNumber } from "../utils/helpers";
 
 const Navbar = () => {
   const { isAuthenticated } = useAuth();
@@ -59,9 +60,9 @@ const Navbar = () => {
           disabled={!isAuthenticated}
         />
         <NavButton
-          to={"/create"}
+          to={"/add"}
           icon={<FaPlus />}
-          text="Create"
+          text="Add"
           disabled={!isAuthenticated}
         />
         <NavButton
@@ -90,7 +91,7 @@ const Navbar = () => {
                     {user.email}
                   </Text>
                   <Text fontSize="lg" letterSpacing={"wider"}>
-                    {balance} VX
+                    {formatNumber(balance)} VX
                   </Text>
                 </Box>
               </Flex>

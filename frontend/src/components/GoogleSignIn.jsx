@@ -42,7 +42,7 @@ const GoogleSignIn = () => {
         let userData = {
           email: user.email,
           fullName: user.displayName,
-          publicKey: response.data.publicKey,
+          publicKey: response.data.publicKey.toLowerCase(),
           picture: user.photoURL,
           uid: user.uid,
         };

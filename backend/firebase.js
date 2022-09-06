@@ -1,5 +1,6 @@
 const { initializeApp } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
+const { getFirestore } = require('firebase-admin/firestore');
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDwOtb7SFh2XHDg0s8hYCUQp1qNHENcsGg',
@@ -12,5 +13,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-module.exports = { auth };
+module.exports = { auth, db };

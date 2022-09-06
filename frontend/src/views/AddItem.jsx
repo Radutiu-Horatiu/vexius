@@ -17,7 +17,7 @@ import GlobalLoading from "../components/GlobalLoading";
 
 import { auth, db } from "../firebase";
 
-const CreateItem = () => {
+const AddItem = () => {
   const user = useSelector(state => state.user.value);
   const nameRef = useRef("");
   const priceRef = useRef("");
@@ -26,7 +26,7 @@ const CreateItem = () => {
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const createItem = async () => {
+  const addItem = async () => {
     let name = nameRef.current.value;
     let price = priceRef.current.value;
 
@@ -131,11 +131,11 @@ const CreateItem = () => {
           </Button>
         </GridItem>
       </Grid>
-      <Button w="100%" onClick={createItem}>
+      <Button w="100%" onClick={addItem}>
         Confirm
       </Button>
     </VStack>
   );
 };
 
-export default CreateItem;
+export default AddItem;

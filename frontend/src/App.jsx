@@ -10,7 +10,7 @@ import "./App.css";
 
 const BuyVexcoins = React.lazy(() => import("./views/BuyVexcoins"));
 const Home = React.lazy(() => import("./views/Home"));
-const CreateItem = React.lazy(() => import("./views/CreateItem"));
+const AddItem = React.lazy(() => import("./views/AddItem"));
 const Profile = React.lazy(() => import("./views/Profile"));
 const Success = React.lazy(() => import("./views/Success"));
 const ItemScreen = React.lazy(() => import("./views/ItemScreen"));
@@ -18,12 +18,11 @@ const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
 const App = () => {
   const location = useLocation();
-  console.log(location);
 
   return (
     <Center h={"100vh"} w="100vw">
       <Flex h={"100%"}>
-        {(location.pathname === "/create" ||
+        {(location.pathname === "/add" ||
           location.pathname === "/buy" ||
           location.pathname === "/profile" ||
           location.pathname === "/send" ||
@@ -57,12 +56,12 @@ const App = () => {
           />
 
           <Route
-            path="/create"
+            path="/add"
             element={
               <RequireAuth>
                 <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Create Item"}>
-                    <CreateItem />
+                  <Screen name={"Add Item"}>
+                    <AddItem />
                   </Screen>
                 </React.Suspense>
               </RequireAuth>

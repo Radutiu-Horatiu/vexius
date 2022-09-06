@@ -3,6 +3,11 @@ const Web3 = require('web3');
 // Vexcoin ABI
 const abi = [
   {
+    inputs: [],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
     inputs: [
       {
         internalType: 'string',
@@ -37,80 +42,6 @@ const abi = [
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'private_key',
-        type: 'string',
-      },
-      {
-        internalType: 'int256',
-        name: 'amount',
-        type: 'int256',
-      },
-    ],
-    name: 'sendVexcoins',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'from_private_key',
-        type: 'string',
-      },
-      {
-        internalType: 'int256',
-        name: 'to_public_key',
-        type: 'int256',
-      },
-      {
-        internalType: 'int256',
-        name: 'amount',
-        type: 'int256',
-      },
-    ],
-    name: 'transferCoins',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'itemId',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'from_private_key',
-        type: 'string',
-      },
-      {
-        internalType: 'int256',
-        name: 'to_public_key',
-        type: 'int256',
-      },
-      {
-        internalType: 'int256',
-        name: 'cost',
-        type: 'int256',
-      },
-    ],
-    name: 'transferItem',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
   },
   {
     inputs: [
@@ -238,6 +169,75 @@ const abi = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'private_key',
+        type: 'string',
+      },
+      {
+        internalType: 'int256',
+        name: 'amount',
+        type: 'int256',
+      },
+    ],
+    name: 'sendVexcoins',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'from_private_key',
+        type: 'string',
+      },
+      {
+        internalType: 'int256',
+        name: 'to_public_key',
+        type: 'int256',
+      },
+      {
+        internalType: 'int256',
+        name: 'amount',
+        type: 'int256',
+      },
+    ],
+    name: 'transferCoins',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'itemId',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'from_private_key',
+        type: 'string',
+      },
+      {
+        internalType: 'int256',
+        name: 'to_public_key',
+        type: 'int256',
+      },
+      {
+        internalType: 'int256',
+        name: 'cost',
+        type: 'int256',
+      },
+    ],
+    name: 'transferItem',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ];
 
 // Create web3 instance and connecte to Coinex Testnet
@@ -254,7 +254,7 @@ web3.eth.accounts.wallet.add(signer);
 // Creating a Contract instance
 const smartContract = new web3.eth.Contract(
   abi,
-  '0xBF260c63d032047ebDCcE89fA2F2bEED182A31D6',
+  '0x900df5B9C8a08446da867A9fA1202C159C03f13e',
   {
     from: signer.address,
   }
