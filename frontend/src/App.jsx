@@ -14,6 +14,7 @@ const AddItem = React.lazy(() => import("./views/AddItem"));
 const Profile = React.lazy(() => import("./views/Profile"));
 const Success = React.lazy(() => import("./views/Success"));
 const ItemScreen = React.lazy(() => import("./views/ItemScreen"));
+const Requests = React.lazy(() => import("./views/Requests"));
 const PageNotFound = React.lazy(() => import("./views/PageNotFound"));
 
 const App = () => {
@@ -26,7 +27,7 @@ const App = () => {
           location.pathname === "/buy" ||
           location.pathname === "/profile" ||
           location.pathname === "/send" ||
-          location.pathname === "/transfer" ||
+          location.pathname === "/requests" ||
           location.pathname.split("/")[1] === "item" ||
           location.pathname === "/") && <Navbar />}
 
@@ -62,6 +63,19 @@ const App = () => {
                 <React.Suspense fallback={<GlobalLoading />}>
                   <Screen name={"Add Item"}>
                     <AddItem />
+                  </Screen>
+                </React.Suspense>
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/requests"
+            element={
+              <RequireAuth>
+                <React.Suspense fallback={<GlobalLoading />}>
+                  <Screen name={"Requests"}>
+                    <Requests />
                   </Screen>
                 </React.Suspense>
               </RequireAuth>

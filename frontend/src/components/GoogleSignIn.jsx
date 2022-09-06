@@ -80,7 +80,7 @@ const GoogleSignIn = () => {
     <>
       {loading && <GlobalLoading text={loadingText} />}
       <Button onClick={googleSignIn} w={"100%"} leftIcon={<FaGoogle />}>
-        Google Login
+        Login
       </Button>
     </>
   );

@@ -19,11 +19,17 @@ export const user = {
     setBalance(state, payload) {
       return { ...state, balance: parseInt(state.balance) + parseInt(payload) };
     },
+    resetBalance(state, payload) {
+      return { ...state, balance: 0 };
+    },
   },
 
   effects: dispatch => ({
     async logout() {
-      await signOut(auth).finally(() => this.setUser(null));
+      await signOut(auth).finally(() => {
+        this.resetBalance();
+        this.setUser(null);
+      });
     },
   }),
 };

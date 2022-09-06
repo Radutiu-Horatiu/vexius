@@ -130,7 +130,7 @@ const BuyVexcoins = () => {
         </Flex>
 
         {/* Buy action */}
-        <Box w={"100%"}>
+        <Box w={"75%"}>
           <Input placeholder="How Many" ref={amountRef} />
 
           <Button

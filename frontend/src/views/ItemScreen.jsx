@@ -10,20 +10,23 @@ import {
   useColorModeValue,
   VStack,
   chakra,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { formatDistance } from "date-fns";
 import GlobalLoading from "../components/GlobalLoading";
 import { auth, db } from "../firebase";
 import { dec2hex, formatNumber, getItemCategoryIcon } from "../utils/helpers";
@@ -32,7 +35,8 @@ const ItemScreen = () => {
   let { id } = useParams();
   const [item, setItem] = useState(null);
   const secondaryColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
-  const itemBgColor = useColorModeValue("blackAlpha.200", "whiteAlpha.200");
+  const toast = useToast();
+  const user = useSelector(state => state.user.value);
 
   // get item
   useEffect(() => {
@@ -86,49 +90,67 @@ const ItemScreen = () => {
 
   if (!item) return <GlobalLoading />;
 
-  const buy = () => {};
+  // create buy request
+  const buy = () => {
+    addDoc(collection(db, "requests"), {
+      itemId: id,
+      toPublicKey: user.publicKey,
+      cost: item.data.price,
+      date: new Date(),
+    });
+
+    toast({
+      position: "bottom-right",
+      title: "Success",
+      description: "Request sent!",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
 
   return (
-    <Stack>
-      <Flex align={"center"}>
-        <Avatar name={item.data.ownerName} />
-        <Box ml={2}>
-          <Text>{item.data.ownerName}</Text>
-          <Text color={secondaryColor} fontSize="xs">
-            {item.data.currentOwner}
+    <Stack spacing={8}>
+      {/* Item */}
+      <VStack borderWidth={1} borderRadius={25} p="1vh">
+        <Flex align={"center"}>
+          <Avatar name={item.data.ownerName} />
+          <Box ml={2}>
+            <Text>{item.data.ownerName}</Text>
+            <Text color={secondaryColor} fontSize="xs">
+              {item.data.currentOwner}
+            </Text>
+          </Box>
+        </Flex>
+        <Divider />
+        <VStack h={"25vh"} justifyContent="center" borderRadius={25}>
+          <Heading>{item.data.name}</Heading>
+          <Text fontSize={"5xl"}>
+            {getItemCategoryIcon(item.data.category)}
           </Text>
-        </Box>
-      </Flex>
-      <Divider />
-      <VStack
-        h={"25vh"}
-        justifyContent="center"
-        bg={itemBgColor}
-        borderRadius={25}
-      >
-        <Heading>{item.data.name}</Heading>
-        <Text fontSize={"5xl"}>{getItemCategoryIcon(item.data.category)}</Text>
-        <Text>{item.data.category}</Text>
-        <Text fontSize={"sm"} color={secondaryColor} fontWeight="light">
-          Registered on{" "}
-          {new Date(item.data.addedAt.seconds * 1000).toLocaleDateString()}
-        </Text>
+          <Text>{item.data.category}</Text>
+          <Text fontSize={"sm"} color={secondaryColor} fontWeight="light">
+            Registered on{" "}
+            {new Date(item.data.addedAt.seconds * 1000).toLocaleDateString()}
+          </Text>
+        </VStack>
+        <Button onClick={buy} leftIcon={<FaArrowRight />} w="50%">
+          Request To Buy For {formatNumber(item.data.price)} VX
+        </Button>
       </VStack>
-      <Button onClick={buy} leftIcon={<FaArrowRight />}>
-        Buy For {formatNumber(item.data.price)} VX
-      </Button>
-      <Divider />
+
+      {/* History */}
       <Heading fontSize={"lg"}>Item Owner History</Heading>
       {item.ownerHistory.map((obj, i) => (
         <Stack key={obj.owner.publicKey}>
           <Flex align={"center"}>
             <Text color={secondaryColor}>{i + 1}</Text>
-            <Avatar name={obj.owner.fullName} ml={2} src={obj.owner.picture} />
+            <Avatar name={obj.owner.fullName} ml={2} />
             <Box ml={2}>
               <Text>
                 {obj.owner.fullName}{" "}
                 <chakra.span color={secondaryColor} fontSize="xs">
-                  @{obj.owner.publicKey}
+                  {obj.owner.publicKey}
                 </chakra.span>
               </Text>
               <Text fontSize="lg">

@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   FaArrowCircleRight,
+  FaExchangeAlt,
   FaHome,
   FaPlus,
   FaSignOutAlt,
@@ -60,9 +61,15 @@ const Navbar = () => {
           disabled={!isAuthenticated}
         />
         <NavButton
+          to={"/requests"}
+          icon={<FaExchangeAlt />}
+          text="Requests"
+          disabled={!isAuthenticated}
+        />
+        <NavButton
           to={"/add"}
           icon={<FaPlus />}
-          text="Add"
+          text="Add Item"
           disabled={!isAuthenticated}
         />
         <NavButton
@@ -84,7 +91,7 @@ const Navbar = () => {
           <VStack spacing={4}>
             <Flex w="100%" align="center" justify={"space-between"}>
               <Flex align="center">
-                <Avatar size="lg" name={user.fullName} src={user?.picture} />
+                <Avatar name={user.fullName} />
                 <Box ml={2}>
                   <Text fontSize="md">{user.fullName}</Text>
                   <Text fontSize={"xs"} color={emailColor}>

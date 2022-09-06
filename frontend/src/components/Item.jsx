@@ -13,12 +13,14 @@ import { formatDistance } from "date-fns";
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { formatNumber, getItemCategoryIcon } from "../utils/helpers";
+import { useSelector } from "react-redux";
 
 const Item = ({ obj }) => {
   const dateColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const user = useSelector(state => state.user.value);
 
   return (
-    <Box w={"100%"} borderTopWidth={1} p={"3vh"}>
+    <Box w={"100%"} borderTopWidth={1} p={"1vh"}>
       <Flex>
         <Avatar name={obj.ownerName} />
         <Box ml={2} w={"100%"}>
@@ -33,30 +35,39 @@ const Item = ({ obj }) => {
                   ml={1}
                 >
                   {formatDistance(
-                    new Date(obj.addedAt.seconds * 1000),
+                    obj.addedAt.seconds
+                      ? new Date(obj.addedAt.seconds * 1000)
+                      : new Date(),
                     new Date(),
                     { addSuffix: true }
                   )}
                 </Text>
               </Flex>
-              <Text fontWeight={"bold"}>{obj.name}</Text>
+              <Text>{obj.category}</Text>
             </Box>
 
-            <Stack p={10} borderWidth={1} borderRadius={25}>
+            <VStack p={10} borderRadius={25}>
               <VStack>
-                <Text fontSize={"2xl"}>
+                <Text fontSize={"4xl"}>
                   {getItemCategoryIcon(obj.category)}
                 </Text>
-                <Text>{obj.category}</Text>
+                <Text fontWeight={"bold"}>{obj.name}</Text>
+                <Text fontSize={"sm"} color={dateColor} fontWeight="light">
+                  Registered on{" "}
+                  {new Date(obj.addedAt.seconds * 1000).toLocaleDateString()}
+                </Text>
               </VStack>
-              <Button
-                leftIcon={<FaArrowRight />}
-                as={ReactRouterLink}
-                to={`/item/${obj.id}`}
-              >
-                Get Item For {formatNumber(obj.price)} VX
-              </Button>
-            </Stack>
+              {user && user.publicKey !== obj.currentOwner && (
+                <Button
+                  leftIcon={<FaArrowRight />}
+                  as={ReactRouterLink}
+                  to={`/item/${obj.id}`}
+                  w="50%"
+                >
+                  Get Item For {formatNumber(obj.price)} VX
+                </Button>
+              )}
+            </VStack>
           </Stack>
         </Box>
       </Flex>
