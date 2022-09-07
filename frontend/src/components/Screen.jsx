@@ -11,7 +11,7 @@ const Screen = ({ children, name, padding = "1vh" }) => {
       </Heading>
       <Box
         h="93vh"
-        w={"50vw"}
+        w={"35vw"}
         overflowY={"auto"}
         p={padding}
         py="1vh"

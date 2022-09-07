@@ -5,18 +5,26 @@ import {
   Flex,
   Heading,
   HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
+  useColorMode,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FaArrowCircleRight,
+  FaEllipsisV,
   FaExchangeAlt,
   FaHome,
+  FaMoon,
   FaPlus,
   FaSignOutAlt,
+  FaSun,
   FaUser,
 } from "react-icons/fa";
 
@@ -32,7 +40,10 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.value);
   const balance = useSelector(state => state.user.balance);
-  const emailColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
+  const bgColor = useColorModeValue("white", "black");
+  const { toggleColorMode } = useColorMode();
+  const text = useColorModeValue("Dark", "Light");
+  const SwitchIcon = useColorModeValue(FaMoon, FaSun);
 
   return (
     <Flex
@@ -94,26 +105,30 @@ const Navbar = () => {
                 <MyAvatar name={user.fullName} />
                 <Box ml={2}>
                   <Text fontSize="md">{user.fullName}</Text>
-                  <Text fontSize={"xs"} color={emailColor}>
-                    {user.email}
-                  </Text>
                   <Text fontSize="lg" letterSpacing={"wider"}>
                     {formatNumber(balance)} VX
                   </Text>
                 </Box>
               </Flex>
-            </Flex>
 
-            <HStack w={"100%"}>
-              <Button
-                onClick={() => dispatch.user.logout()}
-                w={"100%"}
-                leftIcon={<FaSignOutAlt />}
-              >
-                Log Out
-              </Button>
-              <ColorModeSwitcher w="100%" />
-            </HStack>
+              {/* More button */}
+              <Menu>
+                <MenuButton as={Button} bg="transparent">
+                  <FaEllipsisV />
+                </MenuButton>
+                <MenuList bg={bgColor}>
+                  <MenuItem
+                    icon={<FaSignOutAlt />}
+                    onClick={() => dispatch.user.logout()}
+                  >
+                    Log Out
+                  </MenuItem>
+                  <MenuItem onClick={toggleColorMode} icon={<SwitchIcon />}>
+                    {text}
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
           </VStack>
         )}
       </Box>
