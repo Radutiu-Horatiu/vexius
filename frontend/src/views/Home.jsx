@@ -14,7 +14,9 @@ const Home = () => {
     <Box>
       <VStack>
         {items.data
-          .sort((a, b) => (a.addedAt.seconds < b.addedAt.seconds ? 1 : -1))
+          .sort((a, b) =>
+            a.modifiedAt.seconds < b.modifiedAt.seconds ? 1 : -1
+          )
           .map(item => (
             <Item obj={item} key={item.id} />
           ))}

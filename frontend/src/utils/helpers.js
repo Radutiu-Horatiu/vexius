@@ -77,7 +77,7 @@ export const dec2hex = str => {
 
   let result = hex.join("");
 
-  while (result.length != 40) result = "0" + result;
+  while (result.length !== 40) result = "0" + result;
 
   return "0x" + result;
 };

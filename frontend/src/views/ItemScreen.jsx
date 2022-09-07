@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Divider,
@@ -20,7 +19,6 @@ import {
   getDoc,
   getDocs,
   query,
-  setDoc,
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -28,13 +26,15 @@ import { FaArrowRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import GlobalLoading from "../components/GlobalLoading";
+import MyAvatar from "../components/MyAvatar";
 import { auth, db } from "../firebase";
 import { dec2hex, formatNumber, getItemCategoryIcon } from "../utils/helpers";
 
 const ItemScreen = () => {
   let { id } = useParams();
   const [item, setItem] = useState(null);
-  const secondaryColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const [requested, setRequested] = useState(false);
+  const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
   const toast = useToast();
   const user = useSelector(state => state.user.value);
 
@@ -93,11 +93,17 @@ const ItemScreen = () => {
   // create buy request
   const buy = () => {
     addDoc(collection(db, "requests"), {
-      itemId: id,
+      requestedAt: new Date(),
+      toOwnerName: user.fullName,
+      ownerPublicKey: item.data.currentOwner,
+      name: item.data.name,
+      itemId: item.data.id,
+      category: item.data.category,
       toPublicKey: user.publicKey,
       cost: item.data.price,
-      date: new Date(),
     });
+
+    setRequested(true);
 
     toast({
       position: "bottom-right",
@@ -114,7 +120,7 @@ const ItemScreen = () => {
       {/* Item */}
       <VStack borderWidth={1} borderRadius={25} p="1vh">
         <Flex align={"center"}>
-          <Avatar name={item.data.ownerName} />
+          <MyAvatar name={item.data.ownerName} />
           <Box ml={2}>
             <Text>{item.data.ownerName}</Text>
             <Text color={secondaryColor} fontSize="xs">
@@ -124,8 +130,8 @@ const ItemScreen = () => {
         </Flex>
         <Divider />
         <VStack h={"25vh"} justifyContent="center" borderRadius={25}>
-          <Heading>{item.data.name}</Heading>
-          <Text fontSize={"5xl"}>
+          <Heading fontSize={"xl"}>{item.data.name}</Heading>
+          <Text fontSize={"4xl"}>
             {getItemCategoryIcon(item.data.category)}
           </Text>
           <Text>{item.data.category}</Text>
@@ -133,19 +139,23 @@ const ItemScreen = () => {
             Registered on{" "}
             {new Date(item.data.addedAt.seconds * 1000).toLocaleDateString()}
           </Text>
+          {user.publicKey !== item.data.currentOwner &&
+            item.data.price &&
+            !requested && (
+              <Button onClick={buy} leftIcon={<FaArrowRight />}>
+                Request To Buy For {formatNumber(item.data.price)} VX
+              </Button>
+            )}
         </VStack>
-        <Button onClick={buy} leftIcon={<FaArrowRight />} w="50%">
-          Request To Buy For {formatNumber(item.data.price)} VX
-        </Button>
       </VStack>
 
       {/* History */}
       <Heading fontSize={"lg"}>Item Owner History</Heading>
       {item.ownerHistory.map((obj, i) => (
-        <Stack key={obj.owner.publicKey}>
+        <Stack key={obj.date}>
           <Flex align={"center"}>
             <Text color={secondaryColor}>{i + 1}</Text>
-            <Avatar name={obj.owner.fullName} ml={2} />
+            <MyAvatar name={obj.owner.fullName} ml={2} />
             <Box ml={2}>
               <Text>
                 {obj.owner.fullName}{" "}

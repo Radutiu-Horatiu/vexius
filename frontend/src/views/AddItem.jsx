@@ -38,6 +38,7 @@ const AddItem = () => {
     const item = {
       id,
       addedAt: new Date(),
+      modifiedAt: new Date(),
       currentOwner: user.publicKey,
       ownerName: user.fullName,
       name,

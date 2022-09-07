@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Button,
   Flex,
@@ -13,21 +12,20 @@ import { formatDistance } from "date-fns";
 import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { formatNumber, getItemCategoryIcon } from "../utils/helpers";
-import { useSelector } from "react-redux";
+import MyAvatar from "./MyAvatar";
 
 const Item = ({ obj }) => {
-  const dateColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
-  const user = useSelector(state => state.user.value);
+  const dateColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
 
   return (
     <Box w={"100%"} borderTopWidth={1} p={"1vh"}>
       <Flex>
-        <Avatar name={obj.ownerName} />
+        <MyAvatar name={obj.ownerName} />
         <Box ml={2} w={"100%"}>
           <Stack>
             <Box>
               <Flex align={"center"}>
-                <Text fontWeight={"light"}>{obj.ownerName}</Text>
+                <Text>{obj.ownerName}</Text>
                 <Text
                   fontWeight={"light"}
                   fontSize={"xs"}
@@ -35,8 +33,8 @@ const Item = ({ obj }) => {
                   ml={1}
                 >
                   {formatDistance(
-                    obj.addedAt.seconds
-                      ? new Date(obj.addedAt.seconds * 1000)
+                    obj.modifiedAt.seconds
+                      ? new Date(obj.modifiedAt.seconds * 1000)
                       : new Date(),
                     new Date(),
                     { addSuffix: true }
@@ -54,19 +52,22 @@ const Item = ({ obj }) => {
                 <Text fontWeight={"bold"}>{obj.name}</Text>
                 <Text fontSize={"sm"} color={dateColor} fontWeight="light">
                   Registered on{" "}
-                  {new Date(obj.addedAt.seconds * 1000).toLocaleDateString()}
+                  {obj.addedAt.seconds
+                    ? new Date(obj.addedAt.seconds * 1000).toLocaleDateString()
+                    : new Date().toLocaleDateString()}
                 </Text>
+                {obj.price && (
+                  <Text fontWeight={"bold"}>{formatNumber(obj.price)} VX</Text>
+                )}
               </VStack>
-              {user && user.publicKey !== obj.currentOwner && (
-                <Button
-                  leftIcon={<FaArrowRight />}
-                  as={ReactRouterLink}
-                  to={`/item/${obj.id}`}
-                  w="50%"
-                >
-                  Get Item For {formatNumber(obj.price)} VX
-                </Button>
-              )}
+              <Button
+                leftIcon={<FaArrowRight />}
+                as={ReactRouterLink}
+                to={`/item/${obj.id}`}
+                w="50%"
+              >
+                See Item
+              </Button>
             </VStack>
           </Stack>
         </Box>

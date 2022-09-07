@@ -42,11 +42,11 @@ const BuyVexcoins = () => {
       return;
     }
 
-    if (amount > 1000) {
+    if (amount > 10000) {
       toast({
         position: "bottom-right",
         title: "Error",
-        description: "Can't order more than 1000 at a time right now.",
+        description: "Can't order more than 10,000 at a time right now.",
         status: "error",
         duration: 5000,
         isClosable: true,

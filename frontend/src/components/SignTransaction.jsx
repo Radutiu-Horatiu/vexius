@@ -31,7 +31,7 @@ const GetPrivateKey = ({ isOpen, onClose, callbackFunction }) => {
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
       <ModalOverlay bg={bgColorOverlay} />
-      <ModalContent bg={bgColorContent} p={5}>
+      <ModalContent bg={bgColorContent} p={10}>
         <ModalHeader>Sign Transaction</ModalHeader>
         <ModalBody>
           <Flex>

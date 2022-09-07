@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Button,
   Flex,
@@ -26,13 +25,14 @@ import ColorModeSwitcher from "../components/ColorModeSwitcher";
 import NavButton from "./NavButton";
 import GoogleSignIn from "./GoogleSignIn";
 import { formatNumber } from "../utils/helpers";
+import MyAvatar from "./MyAvatar";
 
 const Navbar = () => {
   const { isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.value);
   const balance = useSelector(state => state.user.balance);
-  const emailColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600");
+  const emailColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
 
   return (
     <Flex
@@ -91,7 +91,7 @@ const Navbar = () => {
           <VStack spacing={4}>
             <Flex w="100%" align="center" justify={"space-between"}>
               <Flex align="center">
-                <Avatar name={user.fullName} />
+                <MyAvatar name={user.fullName} />
                 <Box ml={2}>
                   <Text fontSize="md">{user.fullName}</Text>
                   <Text fontSize={"xs"} color={emailColor}>
