@@ -33,7 +33,7 @@ import { dec2hex, formatNumber, getItemCategoryIcon } from "../utils/helpers";
 const ItemScreen = () => {
   let { id } = useParams();
   const [item, setItem] = useState(null);
-  const [requested, setRequested] = useState(false);
+  const [requested, setRequested] = useState(true);
   const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
   const toast = useToast();
   const user = useSelector(state => state.user.value);
@@ -85,6 +85,25 @@ const ItemScreen = () => {
         ownerHistory,
         data: item.data(),
       });
+    })();
+  }, [id]);
+
+  // check if already requested to buy
+  useEffect(() => {
+    if (!id) return;
+
+    // get request item from firestore
+    (async () => {
+      let requestsRef = collection(db, "requests");
+      const q = query(
+        requestsRef,
+        where("itemId", "==", id),
+        where("toPublicKey", "==", user.publicKey)
+      );
+      const querySnapshot = await getDocs(q);
+      let result = querySnapshot.docs.map(el => (el = el.data()));
+
+      setRequested(result.length !== 0);
     })();
   }, [id]);
 

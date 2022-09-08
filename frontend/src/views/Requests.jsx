@@ -10,16 +10,8 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { formatDistance } from "date-fns";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import React, { useState } from "react";
 import { FaArrowRight, FaCheck, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import GlobalLoading from "../components/GlobalLoading";
@@ -29,34 +21,12 @@ import SignTransaction from "../components/SignTransaction";
 
 const Requests = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [requests, setRequests] = useState(null);
+  const requests = useSelector(state => state.requests.data);
   const [activeItem, setActiveItem] = useState(null);
   const [loadingTransfer, setLoadingTransfer] = useState(false);
-  const user = useSelector(state => state.user.value);
   const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
   const toast = useToast();
   const dispatch = useDispatch();
-
-  // get requests
-  useEffect(() => {
-    if (!user) return;
-
-    (async () => {
-      let requestsRef = collection(db, "requests");
-      const q = query(
-        requestsRef,
-        where("ownerPublicKey", "==", user.publicKey)
-      );
-      const querySnapshot = await getDocs(q);
-      setRequests(
-        querySnapshot.docs
-          .map(el => (el = { ...el.data(), id: el.id }))
-          .sort((a, b) =>
-            a.requestedAt.seconds < b.requestedAt.seconds ? 1 : -1
-          )
-      );
-    })();
-  }, [user]);
 
   if (!requests) return <GlobalLoading />;
 
@@ -65,12 +35,12 @@ const Requests = () => {
     deleteDoc(doc(db, "requests", id));
 
     // remove from UI
-    setRequests(requests => requests.filter(el => el.id !== id));
+    dispatch.requests.setData(requests.filter(el => el.id !== id));
 
     toast({
       position: "bottom-right",
       title: "Responded",
-      description: "Offer declined.",
+      description: "Request declined.",
       status: "info",
       duration: 5000,
       isClosable: true,
@@ -113,7 +83,7 @@ const Requests = () => {
       dispatch.user.setBalance(activeItem.cost);
 
       // remove from UI
-      setRequests(requests => requests.filter(el => el.id !== activeItem.id));
+      dispatch.requests.setData(requests.filter(el => el.id !== activeItem.id));
     } catch (error) {
       toast({
         position: "bottom-right",

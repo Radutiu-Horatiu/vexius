@@ -29,10 +29,6 @@ export const theme = extendTheme({
             bg:
               props.colorMode === "dark" ? "whiteAlpha.300" : "blackAlpha.300",
           },
-          _focus: {
-            bg:
-              props.colorMode === "dark" ? "whiteAlpha.300" : "blackAlpha.300",
-          },
         }),
       },
     },

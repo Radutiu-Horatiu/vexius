@@ -13,9 +13,11 @@ import { FaArrowRight } from "react-icons/fa";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { formatNumber, getItemCategoryIcon } from "../utils/helpers";
 import MyAvatar from "./MyAvatar";
+import { useSelector } from "react-redux";
 
 const Item = ({ obj }) => {
   const dateColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
+  const user = useSelector(state => state.user.value);
 
   return (
     <Box w={"100%"} borderTopWidth={1} p={"1vh"}>
@@ -62,9 +64,10 @@ const Item = ({ obj }) => {
               </VStack>
               <Button
                 leftIcon={<FaArrowRight />}
-                as={ReactRouterLink}
+                as={user && ReactRouterLink}
                 to={`/item/${obj.id}`}
                 w="50%"
+                disabled={!user}
               >
                 See Item
               </Button>

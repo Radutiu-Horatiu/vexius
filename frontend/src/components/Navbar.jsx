@@ -39,6 +39,7 @@ const Navbar = () => {
   const { isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.value);
+  const requests = useSelector(state => state.requests.data);
   const balance = useSelector(state => state.user.balance);
   const bgColor = useColorModeValue("white", "black");
   const { toggleColorMode } = useColorMode();
@@ -76,6 +77,7 @@ const Navbar = () => {
           icon={<FaExchangeAlt />}
           text="Requests"
           disabled={!isAuthenticated}
+          number={requests.length}
         />
         <NavButton
           to={"/add"}

@@ -87,3 +87,23 @@ export const items = {
     },
   },
 };
+
+export const requests = {
+  state: {
+    data: [],
+    initialized: false,
+  },
+
+  reducers: {
+    setData(state, payload) {
+      if (!state.initialized) {
+        state.initialized = true;
+      }
+
+      return {
+        ...state,
+        data: payload,
+      };
+    },
+  },
+};
