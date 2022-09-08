@@ -20,7 +20,7 @@ const Item = ({ obj }) => {
   const user = useSelector(state => state.user.value);
 
   return (
-    <Box w={"100%"} borderTopWidth={1} p={"1vh"}>
+    <Box w={"100%"} borderTopWidth={1} p={5}>
       <Flex>
         <MyAvatar name={obj.ownerName} />
         <Box ml={2} w={"100%"}>

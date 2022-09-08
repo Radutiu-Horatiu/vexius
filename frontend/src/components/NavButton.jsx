@@ -21,7 +21,6 @@ const NavButton = ({ to, icon, text, disabled, number = null }) => {
             w={5}
             h={5}
             borderWidth={1}
-            borderc
             ml={2}
             justify="center"
             align={"center"}

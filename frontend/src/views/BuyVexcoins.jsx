@@ -131,7 +131,7 @@ const BuyVexcoins = () => {
 
         {/* Buy action */}
         <Box w={"75%"}>
-          <Input placeholder="How Many" ref={amountRef} />
+          <Input placeholder="Number of VX" ref={amountRef} />
 
           <Button
             w="100%"
@@ -154,7 +154,7 @@ const BuyVexcoins = () => {
             1 VX = 1$ / (number of thousand of users)
           </Text>
           <Text textAlign={"center"} fontWeight={"light"} fontSize="xs">
-            (This is a beta version and right now no real money is in use.)
+            (This is on testnet and right now no real money is in use.)
           </Text>
         </Box>
       </VStack>

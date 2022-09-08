@@ -42,5 +42,16 @@ export const theme = extendTheme({
         },
       },
     },
+    Select: {
+      variants: {
+        outline: {
+          field: {
+            borderRadius: 25,
+            h: 45,
+            cursor: "pointer",
+          },
+        },
+      },
+    },
   },
 });

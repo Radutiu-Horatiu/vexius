@@ -1,9 +1,11 @@
 import {
   Button,
-  Grid,
-  GridItem,
+  Flex,
+  Heading,
   Input,
+  Select,
   Text,
+  useColorModeValue,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -11,6 +13,7 @@ import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
 import React from "react";
 import { useState, useRef } from "react";
+import { FaCheckCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import GlobalLoading from "../components/GlobalLoading";
@@ -19,18 +22,41 @@ import { auth, db } from "../firebase";
 
 const AddItem = () => {
   const user = useSelector(state => state.user.value);
+  const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
+  const blackBg = useColorModeValue("white", "black");
   const nameRef = useRef("");
-  const priceRef = useRef("");
+  const priceRef = useRef(0);
   const toast = useToast();
   const dispatch = useDispatch();
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(false);
+  const categories = [
+    "Watches",
+    "Jewelry",
+    "Clothing",
+    "Shoes",
+    "Handbags",
+    "Accessories",
+    "Beauty",
+    "Automobiles",
+    "Fine Wines",
+  ];
 
   const addItem = async () => {
     let name = nameRef.current.value;
     let price = priceRef.current.value;
 
-    if (!name || !price || !category || !user) return;
+    if (!name || !category || !user) {
+      toast({
+        position: "bottom-right",
+        title: "Error.",
+        description: "Name and category are mandatory fields.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
 
     setLoading(true);
     const id = uuidv4();
@@ -79,63 +105,39 @@ const AddItem = () => {
     });
   };
 
-  if (loading) return <GlobalLoading text={"Storing item safely.."} />;
+  if (loading) return <GlobalLoading text={"Storing safely.."} />;
 
   return (
-    <VStack>
-      <Input placeholder="Name" ref={nameRef} />
-      <Input placeholder="$" ref={priceRef} />
-      <Grid templateColumns="repeat(3, 1fr)" w={"100%"} gap={3}>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Watches")}>
-            <Text>Watches</Text>
+    <Flex h={"100%"} flexDir="column" justify="center">
+      <VStack spacing={8}>
+        <Heading>Your New Item</Heading>
+        <VStack w={"75%"}>
+          <Input placeholder="Name" ref={nameRef} />
+          <Input placeholder="Price" ref={priceRef} />
+          <Select onChange={e => setCategory(e.currentTarget.value)}>
+            <option hidden>Select category</option>
+            {categories.map(obj => (
+              <option
+                key={obj}
+                value={obj}
+                style={{ backgroundColor: blackBg }}
+              >
+                {obj}
+              </option>
+            ))}
+          </Select>
+        </VStack>
+
+        <VStack w={"75%"}>
+          <Button w="100%" onClick={addItem} leftIcon={<FaCheckCircle />}>
+            Confirm
           </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Jewelry")}>
-            <Text>Jewelry</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Clothing")}>
-            <Text>Clothing</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Shoes")}>
-            <Text>Shoes</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Handbags")}>
-            <Text>Handbags</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Accessories")}>
-            <Text>Accessories</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Beauty")}>
-            <Text>Beauty</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Automobiles")}>
-            <Text>Automobiles</Text>
-          </Button>
-        </GridItem>
-        <GridItem w="100%">
-          <Button w={"100%"} onClick={() => setCategory("Fine Wines")}>
-            <Text>Fine Wines</Text>
-          </Button>
-        </GridItem>
-      </Grid>
-      <Button w="100%" onClick={addItem}>
-        Confirm
-      </Button>
-    </VStack>
+          <Text fontSize={"xs"} color={secondaryColor}>
+            *Leave price empty if not for sale.
+          </Text>
+        </VStack>
+      </VStack>
+    </Flex>
   );
 };
 

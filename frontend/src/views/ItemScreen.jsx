@@ -37,6 +37,7 @@ const ItemScreen = () => {
   const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
   const toast = useToast();
   const user = useSelector(state => state.user.value);
+  const balance = useSelector(state => state.user.balance);
 
   // get item
   useEffect(() => {
@@ -105,12 +106,25 @@ const ItemScreen = () => {
 
       setRequested(result.length !== 0);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (!item) return <GlobalLoading />;
 
   // create buy request
   const buy = () => {
+    if (balance < item.data.price) {
+      toast({
+        position: "bottom-right",
+        title: "Error",
+        description: "Not enough Vexcoins. Go get some 🙂",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
     addDoc(collection(db, "requests"), {
       requestedAt: new Date(),
       toOwnerName: user.fullName,

@@ -55,6 +55,7 @@ const App = () => {
 
       dispatch.requests.setData(requests);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
@@ -85,7 +86,7 @@ const App = () => {
             element={
               <RequireAuth>
                 <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Buy Vexcoins"}>
+                  <Screen name={"Get Vexcoins"}>
                     <BuyVexcoins />
                   </Screen>
                 </React.Suspense>
