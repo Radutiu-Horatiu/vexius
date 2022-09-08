@@ -179,6 +179,7 @@ const ItemScreen = () => {
                 Request To Buy For {formatNumber(item.data.price)} VX
               </Button>
             )}
+          {requested && <Text>Already requested.</Text>}
         </VStack>
       </VStack>
 

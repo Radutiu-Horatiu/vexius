@@ -18,7 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   FaArrowCircleRight,
-  FaEllipsisV,
+  FaEllipsisH,
   FaExchangeAlt,
   FaHome,
   FaMoon,
@@ -116,7 +116,7 @@ const Navbar = () => {
               {/* More button */}
               <Menu>
                 <MenuButton as={Button} bg="transparent">
-                  <FaEllipsisV />
+                  <FaEllipsisH />
                 </MenuButton>
                 <MenuList bg={bgColor}>
                   <MenuItem

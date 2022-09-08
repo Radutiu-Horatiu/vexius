@@ -13,13 +13,9 @@ const Home = () => {
   return (
     <Box>
       <VStack>
-        {items.data
-          .sort((a, b) =>
-            a.modifiedAt.seconds < b.modifiedAt.seconds ? 1 : -1
-          )
-          .map(item => (
-            <Item obj={item} key={item.id} />
-          ))}
+        {items.data.map(item => (
+          <Item obj={item} key={item.id} />
+        ))}
       </VStack>
     </Box>
   );

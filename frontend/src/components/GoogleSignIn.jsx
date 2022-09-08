@@ -45,6 +45,7 @@ const GoogleSignIn = () => {
           publicKey: response.data.publicKey.toLowerCase(),
           picture: user.photoURL,
           uid: user.uid,
+          joined: new Date(),
         };
 
         dispatch.user.setUser(userData);

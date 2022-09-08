@@ -29,7 +29,9 @@ const App = () => {
   useEffect(() => {
     (async () => {
       let allItems = await getDocs(collection(db, "items"));
-      allItems = allItems.docs.map(doc => doc.data());
+      allItems = allItems.docs
+        .map(doc => doc.data())
+        .sort((a, b) => (a.modifiedAt.seconds < b.modifiedAt.seconds ? 1 : -1));
       dispatch.items.setData(allItems);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,7 +140,7 @@ const App = () => {
             element={
               <RequireAuth>
                 <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"My Profile"}>
+                  <Screen name={"My Profile"} padding={0}>
                     <Profile />
                   </Screen>
                 </React.Suspense>
