@@ -157,7 +157,7 @@ const ItemScreen = () => {
           <Box ml={2}>
             <Text>{item.data.ownerName}</Text>
             <Text color={secondaryColor} fontSize="xs">
-              {item.data.currentOwner}
+              {item.data.currentOwner.slice(0, 25)}...
             </Text>
           </Box>
         </Flex>
@@ -194,7 +194,7 @@ const ItemScreen = () => {
               <Text>
                 {obj.owner.fullName}{" "}
                 <chakra.span color={secondaryColor} fontSize="xs">
-                  {obj.owner.publicKey}
+                  {obj.owner.publicKey.slice(0, 25)}...
                 </chakra.span>
               </Text>
               <Text fontSize="lg">

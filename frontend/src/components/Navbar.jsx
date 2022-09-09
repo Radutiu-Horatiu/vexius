@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Image,
   Menu,
   MenuButton,
   MenuItem,
@@ -13,6 +14,7 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
+  useMediaQuery,
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +36,8 @@ import NavButton from "./NavButton";
 import GoogleSignIn from "./GoogleSignIn";
 import { formatNumber } from "../utils/helpers";
 import MyAvatar from "./MyAvatar";
+import WHITE_LOGO from "../assets/images/VX_white.png";
+import DARK_LOGO from "../assets/images/VX_black.png";
 
 const Navbar = () => {
   const { isAuthenticated } = useAuth();
@@ -42,52 +46,60 @@ const Navbar = () => {
   const requests = useSelector(state => state.requests.data);
   const balance = useSelector(state => state.user.balance);
   const bgColor = useColorModeValue("white", "black");
+  const logo = useColorModeValue(DARK_LOGO, WHITE_LOGO);
   const { toggleColorMode } = useColorMode();
   const text = useColorModeValue("Dark", "Light");
   const SwitchIcon = useColorModeValue(FaMoon, FaSun);
+  const [minWidth1024] = useMediaQuery("(min-width: 1024px)");
 
   return (
     <Flex
-      w={"15vw"}
       h="100%"
       justifyContent="space-between"
       flexDir={"column"}
-      p={"1vh"}
+      p={2}
+      w={"15vw"}
     >
       {/* Top */}
-      <Stack>
-        <Heading
-          textTransform={"uppercase"}
-          fontWeight="light"
-          letterSpacing={"wider"}
-          fontSize="4xl"
-          mb={5}
-        >
-          Vexius
-        </Heading>
-        <NavButton to={"/"} icon={<FaHome />} text="Home" />
+      <Stack spacing={3}>
+        <Flex justify={["center", "center", "flex-start"]} mb={5}>
+          {minWidth1024 ? (
+            <Heading
+              textTransform={"uppercase"}
+              fontWeight="light"
+              letterSpacing={"wider"}
+              fontSize="4xl"
+            >
+              Vexius
+            </Heading>
+          ) : (
+            <Image src={logo} w={10} mt={"1vh"} />
+          )}
+        </Flex>
+
+        <NavButton to={"/"} icon={FaHome} text="Home" />
         <NavButton
           to={"/profile"}
-          icon={<FaUser />}
+          icon={FaUser}
           text="Profile"
           disabled={!isAuthenticated}
         />
         <NavButton
           to={"/requests"}
-          icon={<FaExchangeAlt />}
+          icon={FaExchangeAlt}
           text="Requests"
           disabled={!isAuthenticated}
           number={requests.length}
         />
         <NavButton
           to={"/add"}
-          icon={<FaPlus />}
+          icon={FaPlus}
           text="Add Item"
           disabled={!isAuthenticated}
         />
         <NavButton
           to={"/buy"}
-          icon={<FaArrowCircleRight />}
+          icon={FaArrowCircleRight}
           text="Get Vexcoins"
           disabled={!isAuthenticated}
         />
@@ -105,31 +117,35 @@ const Navbar = () => {
             <Flex w="100%" align="center" justify={"space-between"}>
               <Flex align="center">
                 <MyAvatar name={user.fullName} />
-                <Box ml={2}>
-                  <Text fontSize="md">{user.fullName}</Text>
-                  <Text fontSize="lg" letterSpacing={"wider"}>
-                    {formatNumber(balance)} VX
-                  </Text>
-                </Box>
+                {minWidth1024 && (
+                  <Box ml={2}>
+                    <Text fontSize="md">{user.fullName}</Text>
+                    <Text fontSize="lg" letterSpacing={"wider"}>
+                      {formatNumber(balance)} VX
+                    </Text>
+                  </Box>
+                )}
               </Flex>
 
               {/* More button */}
-              <Menu>
-                <MenuButton as={Button} bg="transparent">
-                  <FaEllipsisH />
-                </MenuButton>
-                <MenuList bg={bgColor}>
-                  <MenuItem
-                    icon={<FaSignOutAlt />}
-                    onClick={() => dispatch.user.logout()}
-                  >
-                    Log Out
-                  </MenuItem>
-                  <MenuItem onClick={toggleColorMode} icon={<SwitchIcon />}>
-                    {text}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+              {minWidth1024 && (
+                <Menu>
+                  <MenuButton as={Button} bg="transparent">
+                    <FaEllipsisH />
+                  </MenuButton>
+                  <MenuList bg={bgColor}>
+                    <MenuItem
+                      icon={<FaSignOutAlt />}
+                      onClick={() => dispatch.user.logout()}
+                    >
+                      Log Out
+                    </MenuItem>
+                    <MenuItem onClick={toggleColorMode} icon={<SwitchIcon />}>
+                      {text}
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
             </Flex>
           </VStack>
         )}

@@ -59,117 +59,120 @@ const App = () => {
   }, [user]);
 
   return (
-    <Center h={"100vh"} w="100vw">
-      <Flex h={"100%"}>
-        {(location.pathname === "/add" ||
-          location.pathname === "/buy" ||
-          location.pathname === "/profile" ||
-          location.pathname === "/send" ||
-          location.pathname === "/requests" ||
-          location.pathname.split("/")[1] === "item" ||
-          location.pathname === "/") && <Navbar />}
+    <Flex
+      h="100vh"
+      w="100vw"
+      justify={["flex-start", "flex-start", "center"]}
+      overflow="hidden"
+    >
+      {(location.pathname === "/add" ||
+        location.pathname === "/buy" ||
+        location.pathname === "/profile" ||
+        location.pathname === "/send" ||
+        location.pathname === "/requests" ||
+        location.pathname.split("/")[1] === "item" ||
+        location.pathname === "/") && <Navbar />}
 
-        <Routes>
-          <Route
-            path="/"
-            element={
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <React.Suspense fallback={<GlobalLoading />}>
+              <Screen name={"Home"} padding={0}>
+                <Home />
+              </Screen>
+            </React.Suspense>
+          }
+        />
+
+        <Route
+          path="/buy"
+          element={
+            <RequireAuth>
               <React.Suspense fallback={<GlobalLoading />}>
-                <Screen name={"Home"} padding={0}>
-                  <Home />
+                <Screen name={"Get Vexcoins"}>
+                  <BuyVexcoins />
                 </Screen>
               </React.Suspense>
-            }
-          />
+            </RequireAuth>
+          }
+        />
 
-          <Route
-            path="/buy"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Get Vexcoins"}>
-                    <BuyVexcoins />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/add"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Add Item"}>
-                    <AddItem />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/requests"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Requests"}>
-                    <Requests />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/item/:id"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"Item"}>
-                    <ItemScreen />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <React.Suspense fallback={<GlobalLoading />}>
-                  <Screen name={"My Profile"} padding={0}>
-                    <Profile />
-                  </Screen>
-                </React.Suspense>
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/success"
-            element={
+        <Route
+          path="/add"
+          element={
+            <RequireAuth>
               <React.Suspense fallback={<GlobalLoading />}>
-                <Center h={"100vh"} w={"100vw"}>
-                  <Success />
-                </Center>
+                <Screen name={"Add Item"}>
+                  <AddItem />
+                </Screen>
               </React.Suspense>
-            }
-          />
+            </RequireAuth>
+          }
+        />
 
-          <Route
-            path="*"
-            element={
+        <Route
+          path="/requests"
+          element={
+            <RequireAuth>
               <React.Suspense fallback={<GlobalLoading />}>
-                <Center h={"100vh"} w={"100vw"}>
-                  <PageNotFound />
-                </Center>
+                <Screen name={"Requests"}>
+                  <Requests />
+                </Screen>
               </React.Suspense>
-            }
-          />
-        </Routes>
-      </Flex>
-    </Center>
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/item/:id"
+          element={
+            <RequireAuth>
+              <React.Suspense fallback={<GlobalLoading />}>
+                <Screen name={"Item"}>
+                  <ItemScreen />
+                </Screen>
+              </React.Suspense>
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <React.Suspense fallback={<GlobalLoading />}>
+                <Screen name={"My Profile"} padding={0}>
+                  <Profile />
+                </Screen>
+              </React.Suspense>
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/success"
+          element={
+            <React.Suspense fallback={<GlobalLoading />}>
+              <Center h={"100vh"} w={"100vw"}>
+                <Success />
+              </Center>
+            </React.Suspense>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <React.Suspense fallback={<GlobalLoading />}>
+              <Center h={"100vh"} w={"100vw"}>
+                <PageNotFound />
+              </Center>
+            </React.Suspense>
+          }
+        />
+      </Routes>
+    </Flex>
   );
 };
 

@@ -5,13 +5,17 @@ const Screen = ({ children, name, padding = "1vh" }) => {
   const theme = useColorMode();
 
   return (
-    <Box borderWidth={1} borderTop={"none"} borderBottom={"none"}>
+    <Box
+      borderWidth={1}
+      borderTop={"none"}
+      borderBottom={"none"}
+      w={["100%", "100%", "35vw"]}
+    >
       <Heading fontSize={"2xl"} fontWeight="thin" h="5vh" p={"1vh"}>
         {name}
       </Heading>
       <Box
         h="93vh"
-        w={"35vw"}
         overflowY={"auto"}
         p={padding}
         py="1vh"
