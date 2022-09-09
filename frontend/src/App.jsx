@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Center, Flex } from "@chakra-ui/react";
+import { Center, Flex, useMediaQuery } from "@chakra-ui/react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import GlobalLoading from "./components/GlobalLoading";
@@ -24,6 +24,7 @@ const App = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.value);
+  const [minWidth1024] = useMediaQuery("(min-width: 1024px)");
 
   // get home feed items
   useEffect(() => {
@@ -64,6 +65,7 @@ const App = () => {
       w="100vw"
       justify={["flex-start", "flex-start", "center"]}
       overflow="hidden"
+      pl={!minWidth1024 && "15vw"}
     >
       {(location.pathname === "/add" ||
         location.pathname === "/buy" ||

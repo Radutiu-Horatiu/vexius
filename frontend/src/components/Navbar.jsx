@@ -60,6 +60,10 @@ const Navbar = () => {
       flexDir={"column"}
       p={2}
       w={"15vw"}
+      pos={!minWidth1024 && "fixed"}
+      top={0}
+      left={0}
+      zIndex={1}
     >
       {/* Top */}
       <Stack spacing={3}>
@@ -170,6 +174,7 @@ const Navbar = () => {
                   <MenuItem
                     icon={<FaSignOutAlt />}
                     onClick={() => dispatch.user.logout()}
+                    bg="red"
                   >
                     Log Out
                   </MenuItem>
