@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import GlobalLoading from "./GlobalLoading";
 
-const GoogleSignIn = () => {
+const GoogleSignIn = props => {
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState(null);
   const provider = new GoogleAuthProvider();
@@ -80,7 +80,12 @@ const GoogleSignIn = () => {
   return (
     <>
       {loading && <GlobalLoading text={loadingText} />}
-      <Button onClick={googleSignIn} w={"100%"} leftIcon={<FaGoogle />}>
+      <Button
+        onClick={googleSignIn}
+        w={"100%"}
+        leftIcon={<FaGoogle />}
+        {...props}
+      >
         Login
       </Button>
     </>

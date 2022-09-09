@@ -1,13 +1,14 @@
 import React from "react";
 import {
   Box,
-  Button,
   Flex,
   Heading,
   HStack,
+  IconButton,
   Image,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Stack,
@@ -108,44 +109,75 @@ const Navbar = () => {
       {/* Bottom */}
       <Box>
         {!isAuthenticated ? (
-          <HStack w={"100%"}>
-            <GoogleSignIn />
-            <ColorModeSwitcher w="100%" />
-          </HStack>
+          minWidth1024 ? (
+            <HStack w={"100%"}>
+              <GoogleSignIn />
+              <ColorModeSwitcher w="100%" />
+            </HStack>
+          ) : (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                bg="transparent"
+                icon={<FaEllipsisH />}
+              ></MenuButton>
+              <MenuList bg={bgColor}>
+                <GoogleSignIn bg="transparent" />
+                <ColorModeSwitcher w="100%" bg="transparent" mt={2} />
+              </MenuList>
+            </Menu>
+          )
         ) : (
           <VStack spacing={4}>
             <Flex w="100%" align="center" justify={"space-between"}>
-              <Flex align="center">
-                <MyAvatar name={user.fullName} />
-                {minWidth1024 && (
+              {minWidth1024 && (
+                <Flex align="center">
+                  <MyAvatar name={user.fullName} />
+
                   <Box ml={2}>
                     <Text fontSize="md">{user.fullName}</Text>
                     <Text fontSize="lg" letterSpacing={"wider"}>
                       {formatNumber(balance)} VX
                     </Text>
                   </Box>
-                )}
-              </Flex>
+                </Flex>
+              )}
 
               {/* More button */}
-              {minWidth1024 && (
-                <Menu>
-                  <MenuButton as={Button} bg="transparent">
-                    <FaEllipsisH />
-                  </MenuButton>
-                  <MenuList bg={bgColor}>
-                    <MenuItem
-                      icon={<FaSignOutAlt />}
-                      onClick={() => dispatch.user.logout()}
-                    >
-                      Log Out
-                    </MenuItem>
-                    <MenuItem onClick={toggleColorMode} icon={<SwitchIcon />}>
-                      {text}
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              )}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  bg="transparent"
+                  icon={<FaEllipsisH />}
+                ></MenuButton>
+                <MenuList bg={bgColor}>
+                  {!minWidth1024 && (
+                    <>
+                      <Flex align="center" m={2}>
+                        <MyAvatar name={user.fullName} />
+
+                        <Box ml={2}>
+                          <Text fontSize="md">{user.fullName}</Text>
+                          <Text fontSize="lg" letterSpacing={"wider"}>
+                            {formatNumber(balance)} VX
+                          </Text>
+                        </Box>
+                      </Flex>
+                      <MenuDivider />
+                    </>
+                  )}
+
+                  <MenuItem
+                    icon={<FaSignOutAlt />}
+                    onClick={() => dispatch.user.logout()}
+                  >
+                    Log Out
+                  </MenuItem>
+                  <MenuItem onClick={toggleColorMode} icon={<SwitchIcon />}>
+                    {text}
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           </VStack>
         )}
