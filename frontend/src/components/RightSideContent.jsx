@@ -19,6 +19,7 @@ import { getItemCategoryIcon } from "../utils/helpers";
 const RightSideContent = () => {
   const [minWidth1024] = useMediaQuery("(min-width: 1024px)");
   const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
+  const bgColor = useColorModeValue("blackAlpha.100", "whiteAlpha.200");
   const { isAuthenticated } = useAuth();
 
   const categories = [
@@ -46,17 +47,11 @@ const RightSideContent = () => {
         </InputGroup>
 
         {/* Trends */}
-        <Stack
-          p={4}
-          borderRadius={25}
-          bg="whiteAlpha.200"
-          w={"100%"}
-          spacing={6}
-        >
+        <Stack p={4} borderRadius={25} bg={bgColor} w={"100%"} spacing={6}>
           <Text fontSize={"xl"}>Trends for you</Text>
 
           {categories.map(obj => (
-            <Flex justify={"space-between"} align="center">
+            <Flex justify={"space-between"} align="center" key={obj.category}>
               {/* Left side */}
               <Stack>
                 <HStack>
