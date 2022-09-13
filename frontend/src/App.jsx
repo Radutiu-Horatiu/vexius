@@ -10,6 +10,7 @@ import "./App.css";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";
+import RightSideContent from "./components/RightSideContent";
 
 const BuyVexcoins = React.lazy(() => import("./views/BuyVexcoins"));
 const Home = React.lazy(() => import("./views/Home"));
@@ -59,6 +60,19 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  // display more content if logged in and allowed on route
+  const showContent = () => {
+    return (
+      location.pathname === "/add" ||
+      location.pathname === "/buy" ||
+      location.pathname === "/profile" ||
+      location.pathname === "/send" ||
+      location.pathname === "/requests" ||
+      location.pathname.split("/")[1] === "item" ||
+      location.pathname === "/"
+    );
+  };
+
   return (
     <Flex
       h="100vh"
@@ -67,14 +81,10 @@ const App = () => {
       overflow="hidden"
       pl={!minWidth1024 && "15vw"}
     >
-      {(location.pathname === "/add" ||
-        location.pathname === "/buy" ||
-        location.pathname === "/profile" ||
-        location.pathname === "/send" ||
-        location.pathname === "/requests" ||
-        location.pathname.split("/")[1] === "item" ||
-        location.pathname === "/") && <Navbar />}
+      {/* Left side navbar */}
+      {showContent() && <Navbar />}
 
+      {/* Middle screens */}
       <Routes>
         <Route
           path="/"
@@ -174,6 +184,9 @@ const App = () => {
           }
         />
       </Routes>
+
+      {/* Right side content */}
+      {showContent() && <RightSideContent />}
     </Flex>
   );
 };

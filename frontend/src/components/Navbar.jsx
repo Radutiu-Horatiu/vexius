@@ -136,7 +136,11 @@ const Navbar = () => {
             <Flex w="100%" align="center" justify={"space-between"}>
               {minWidth1024 && (
                 <Flex align="center">
-                  <MyAvatar name={user.fullName} />
+                  <MyAvatar
+                    name={user.fullName}
+                    src={user.picture}
+                    borderWidth={0}
+                  />
 
                   <Box ml={2}>
                     <Text fontSize="md">{user.fullName}</Text>
@@ -174,7 +178,6 @@ const Navbar = () => {
                   <MenuItem
                     icon={<FaSignOutAlt />}
                     onClick={() => dispatch.user.logout()}
-                    bg="red"
                   >
                     Log Out
                   </MenuItem>

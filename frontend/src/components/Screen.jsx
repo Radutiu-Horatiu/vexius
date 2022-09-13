@@ -9,7 +9,7 @@ const Screen = ({ children, name, padding = "1vh" }) => {
       borderWidth={1}
       borderTop={"none"}
       borderBottom={"none"}
-      w={["100%", "100%", "35vw"]}
+      w={["100%", "100%", "30vw"]}
     >
       <Heading fontSize={"2xl"} fontWeight="thin" h="5vh" p={"1vh"}>
         {name}
