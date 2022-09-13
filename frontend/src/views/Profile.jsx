@@ -63,7 +63,11 @@ const Profile = () => {
           Inventory
         </Heading>
         {items.map(item => (
-          <Item obj={item} key={item.id} />
+          <Item
+            obj={item}
+            key={item.id}
+            editable={item.currentOwner === user.publicKey}
+          />
         ))}
         {!items.length && <Text pl={3}>No items.</Text>}
       </Stack>
