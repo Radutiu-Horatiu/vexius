@@ -62,7 +62,10 @@ const LandingPage = () => {
               Github
             </Text>
           </a>
-          <a href="https://github.com/Radutiu-Horatiu/vexius" target="_blank">
+          <a
+            href="https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media&token=bd62480d-d0a2-4a13-ad7e-b9b86787555f"
+            target="_blank"
+          >
             <Text fontWeight={"bold"} fontSize="lg">
               Lightpaper
             </Text>
@@ -103,7 +106,7 @@ const LandingPage = () => {
                 w="100%"
                 variant={"outline"}
                 borderRadius={25}
-                h='5vh'
+                h="5vh"
               >
                 Check Out
               </Button>
