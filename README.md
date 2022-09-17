@@ -4,8 +4,8 @@
 This is Vexius, your marketplace from the metaverse. 
 It is a decentralized store where you can buy, sell and swap luxury goods with and from other people built on top of the CoinEx Smart Chain Blockchain.
 
-Link to app: https://vexius.store/
-Lightpaper: https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media
+# Link to app: https://vexius.store/
+# Lightpaper: https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media
 
 ### Smart Contract
 Vexius is open source for a reason. Anyone can use the smart contract that was implemented into the application.
