@@ -57,14 +57,19 @@ const LandingPage = () => {
 
         {/* Nav items */}
         <HStack spacing={[2, 2, 6]}>
-          <a href="https://github.com/Radutiu-Horatiu/vexius" target="_blank">
+          <a
+            href="https://github.com/Radutiu-Horatiu/vexius"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Text fontWeight={"bold"} fontSize={["md", "md", "lg"]}>
               Github
             </Text>
           </a>
           <a
-            href="https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media&token=bd62480d-d0a2-4a13-ad7e-b9b86787555f"
+            href="https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media"
             target="_blank"
+            rel="noreferrer"
           >
             <Text fontWeight={"bold"} fontSize={["md", "md", "lg"]}>
               Lightpaper
@@ -76,7 +81,12 @@ const LandingPage = () => {
 
       {/* Main Screen */}
       <Center h={"100vh"} w={["100vw", "100vw", "60vw"]}>
-        <Flex flexDir={["column", "column", "row"]} p={5} justify="center" align={'center'}>
+        <Flex
+          flexDir={["column", "column", "row"]}
+          p={5}
+          justify="center"
+          align={"center"}
+        >
           <VStack spacing={[4, 4, 8]}>
             <Image src={logo} w={["15vh", "15vh", "20vh"]} />
             <VStack spacing={0}>
@@ -113,7 +123,12 @@ const LandingPage = () => {
             </VStack>
           </VStack>
 
-          <Image src={APP_IMAGE} h={["35vh", "35vh", "70vh"]} w="100%" mt={[5,5,0]} />
+          <Image
+            src={APP_IMAGE}
+            h={["35vh", "35vh", "70vh"]}
+            w="100%"
+            mt={[5, 5, 0]}
+          />
         </Flex>
       </Center>
     </Box>
