@@ -24,7 +24,7 @@ const Success = () => {
   const navigate = useNavigate();
 
   const goHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const copyPrivateKey = () => {

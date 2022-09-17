@@ -82,7 +82,7 @@ const Navbar = () => {
           )}
         </Flex>
 
-        <NavButton to={"/"} icon={FaHome} text="Home" />
+        <NavButton to={"/home"} icon={FaHome} text="Home" />
         <NavButton
           to={"/profile"}
           icon={FaUser}

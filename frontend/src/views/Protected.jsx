@@ -22,7 +22,7 @@ const Protected = () => {
           middleware.
         </Text>
         <HStack>
-          <Button as={ReactRouterLink} to="/">
+          <Button as={ReactRouterLink} to="/home">
             Go Home
           </Button>
           <Button onClick={() => dispatch.user.logout()}>Logout</Button>

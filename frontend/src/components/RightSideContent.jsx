@@ -19,7 +19,6 @@ import { getItemCategoryIcon } from "../utils/helpers";
 const RightSideContent = () => {
   const [minWidth1024] = useMediaQuery("(min-width: 1024px)");
   const secondaryColor = useColorModeValue("blackAlpha.700", "whiteAlpha.600");
-  const bgColor = useColorModeValue("blackAlpha.100", "whiteAlpha.200");
   const { isAuthenticated } = useAuth();
 
   const categories = [
@@ -41,13 +40,13 @@ const RightSideContent = () => {
     >
       <VStack>
         {/* Search */}
-        <InputGroup>
+        <InputGroup zIndex={0}>
           <InputLeftElement pointerEvents="none" children={<FaSearch />} />
-          <Input placeholder="Search Vexius" />
+          <Input placeholder="Search Vexius" disabled={true} />
         </InputGroup>
 
         {/* Trends */}
-        <Stack p={4} borderRadius={25} bg={bgColor} w={"100%"} spacing={6}>
+        <Stack p={4} borderRadius={25} borderWidth={1} w={"100%"} spacing={6}>
           <Text fontSize={"xl"}>Trends for you</Text>
 
           {categories.map(obj => (

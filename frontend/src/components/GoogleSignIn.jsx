@@ -67,7 +67,7 @@ const GoogleSignIn = props => {
         dispatch.user.setUser(userData.data());
 
         // go home
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       console.log(error);

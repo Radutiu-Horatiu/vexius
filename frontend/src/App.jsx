@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 
 import GlobalLoading from "./components/GlobalLoading";
 import RequireAuth from "./components/routeMiddlewares/RequireAuth";
+import RequireNotAuth from "./components/routeMiddlewares/RequireNotAuth";
 import Screen from "./components/Screen";
 import Navbar from "./components/Navbar";
 import "./App.css";
@@ -13,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RightSideContent from "./components/RightSideContent";
 
 const BuyVexcoins = React.lazy(() => import("./views/BuyVexcoins"));
+const LandingPage = React.lazy(() => import("./views/LandingPage"));
 const Home = React.lazy(() => import("./views/Home"));
 const AddItem = React.lazy(() => import("./views/AddItem"));
 const Profile = React.lazy(() => import("./views/Profile"));
@@ -69,7 +71,7 @@ const App = () => {
       location.pathname === "/send" ||
       location.pathname === "/requests" ||
       location.pathname.split("/")[1] === "item" ||
-      location.pathname === "/"
+      location.pathname === "/home"
     );
   };
 
@@ -88,6 +90,17 @@ const App = () => {
       <Routes>
         <Route
           path="/"
+          element={
+            <RequireNotAuth>
+              <React.Suspense fallback={<GlobalLoading />}>
+                <LandingPage />
+              </React.Suspense>
+            </RequireNotAuth>
+          }
+        />
+
+        <Route
+          path="/home"
           element={
             <React.Suspense fallback={<GlobalLoading />}>
               <Screen name={"Home"} padding={0}>
