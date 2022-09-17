@@ -81,7 +81,7 @@ const App = () => {
       w="100vw"
       justify={["flex-start", "flex-start", "center"]}
       overflow="hidden"
-      pl={!minWidth1024 && "15vw"}
+      pl={!minWidth1024 && location.pathname !== "/" && "15vw"}
     >
       {/* Left side navbar */}
       {showContent() && <Navbar />}

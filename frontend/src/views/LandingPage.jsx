@@ -27,14 +27,14 @@ const LandingPage = () => {
   const bgColor = useColorModeValue("white", "black");
 
   return (
-    <Box p={5}>
+    <Box>
       {/* Navbar */}
       <Flex
         pos={"fixed"}
         top={0}
         left={0}
         p={5}
-        px="20vw"
+        px={[3, 3, "20vw"]}
         justify={"space-between"}
         w="100%"
         bg={bgColor}
@@ -56,9 +56,9 @@ const LandingPage = () => {
         </Box>
 
         {/* Nav items */}
-        <HStack spacing={6}>
+        <HStack spacing={[2, 2, 6]}>
           <a href="https://github.com/Radutiu-Horatiu/vexius" target="_blank">
-            <Text fontWeight={"bold"} fontSize="lg">
+            <Text fontWeight={"bold"} fontSize={["md", "md", "lg"]}>
               Github
             </Text>
           </a>
@@ -66,7 +66,7 @@ const LandingPage = () => {
             href="https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media&token=bd62480d-d0a2-4a13-ad7e-b9b86787555f"
             target="_blank"
           >
-            <Text fontWeight={"bold"} fontSize="lg">
+            <Text fontWeight={"bold"} fontSize={["md", "md", "lg"]}>
               Lightpaper
             </Text>
           </a>
@@ -76,14 +76,14 @@ const LandingPage = () => {
 
       {/* Main Screen */}
       <Center h={"100vh"} w={["100vw", "100vw", "60vw"]}>
-        <HStack spacing={8}>
-          <VStack spacing={8}>
-            <Image src={logo} w={"20vh"} />
+        <Flex flexDir={["column", "column", "row"]} p={5} justify="center" align={'center'}>
+          <VStack spacing={[4, 4, 8]}>
+            <Image src={logo} w={["15vh", "15vh", "20vh"]} />
             <VStack spacing={0}>
-              <Heading fontWeight={"light"} fontSize="xl">
+              <Heading fontWeight={"light"} fontSize={["md", "md", "xl"]}>
                 Your Marketplace.
               </Heading>
-              <Heading fontWeight={"light"} fontSize="xl">
+              <Heading fontWeight={"light"} fontSize={["md", "md", "xl"]}>
                 From The Metaverse.
               </Heading>
             </VStack>
@@ -94,7 +94,7 @@ const LandingPage = () => {
               <Text
                 textAlign="center"
                 textTransform={"capitalize"}
-                fontSize="3xl"
+                fontSize={["md", "md", "3xl"]}
               >
                 Vexius is a decentralized marketplace for luxury items.
               </Text>
@@ -113,8 +113,8 @@ const LandingPage = () => {
             </VStack>
           </VStack>
 
-          <Image src={APP_IMAGE} h={"70vh"} />
-        </HStack>
+          <Image src={APP_IMAGE} h={["35vh", "35vh", "70vh"]} w="100%" mt={[5,5,0]} />
+        </Flex>
       </Center>
     </Box>
   );
