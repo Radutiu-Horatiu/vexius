@@ -62,18 +62,14 @@ const LandingPage = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <Text fontWeight={"bold"} fontSize={["md", "md", "lg"]}>
-              Github
-            </Text>
+            <Text fontSize={["md", "md", "lg"]}>Github</Text>
           </a>
           <a
             href="https://firebasestorage.googleapis.com/v0/b/vexius-56e53.appspot.com/o/Vexius_Lightpaper.pdf?alt=media"
             target="_blank"
             rel="noreferrer"
           >
-            <Text fontWeight={"bold"} fontSize={["md", "md", "lg"]}>
-              Lightpaper
-            </Text>
+            <Text fontSize={["md", "md", "lg"]}>Lightpaper</Text>
           </a>
           <ColorModeSwitcher noText={true} />
         </HStack>
@@ -106,11 +102,12 @@ const LandingPage = () => {
                 textTransform={"capitalize"}
                 fontSize={["md", "md", "3xl"]}
               >
-                Vexius is a decentralized marketplace for luxury items.
+                Decentralized Store for luxury goods
               </Text>
 
               <Button
                 as={ReactRouterLink}
+                // to="/home?tutorial=true"
                 to="/home"
                 leftIcon={<FaArrowRight />}
                 w="100%"
