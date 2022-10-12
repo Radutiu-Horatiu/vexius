@@ -1,3 +1,6 @@
+![app_image](https://user-images.githubusercontent.com/61684220/195370727-ae181f4c-08bb-420b-9b49-9e0f62245014.png)
+
+
 # 🌟 VEXIUS
 ### MetaFi The CoinEx Smart Chain Challenge. A marketplace for the Metaverse.
 
