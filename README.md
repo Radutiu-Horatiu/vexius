@@ -15,7 +15,7 @@ Vexius is open source for a reason. Anyone can use the smart contract that was i
 # 🪄 Why Vexius?
 Fun things to do on Vexius:
 
-### ✅ Register items.
-### ✅ Get items.
-### ✅ Transfer items.
-### ✅ Add users.
+### ✅ Register items
+### ✅ Retrieve items
+### ✅ Transfer items
+### ✅ Manage users
